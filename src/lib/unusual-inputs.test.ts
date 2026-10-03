@@ -27,8 +27,8 @@ describe("emoji and Arabic names", () => {
     expect(validateCategoryName("صدقة جارية 🕌", cats)).toBeNull();
   });
   it("match exactly and literally", () => {
-    expect(findCategoryByName(cats as never, "صدقة")?.id).toBe("1");
-    expect(findCategoryByName(cats as never, "Eid 🎉 gifts")?.id).toBe("2");
+    expect((findCategoryByName(cats as never, "صدقة") as { id: string } | undefined)?.id).toBe("1");
+    expect((findCategoryByName(cats as never, "Eid 🎉 gifts") as { id: string } | undefined)?.id).toBe("2");
     expect(findCategoryByName(cats as never, "Eid gifts")).toBeUndefined();
     expect(findCategoryByName(cats as never, "زكاة")).toBeUndefined();
   });
