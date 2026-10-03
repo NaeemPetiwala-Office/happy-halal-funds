@@ -18,7 +18,7 @@ export async function seedSampleData() {
       .from("accounts")
       .insert([
         { name: "Current account", opening_balance: 1500, minimum_balance: 200 },
-        { name: "Cash wallet", opening_balance: 120 },
+        { name: "Cash wallet", opening_balance: 120, minimum_balance: 0 },
       ])
       .select(),
   );
@@ -48,13 +48,13 @@ export async function seedSampleData() {
     await supabase
       .from("categories")
       .insert([
-        { name: "Rent", type: "Fixed", planned: 1200, notes: note },
-        { name: "Utilities", type: "Fixed", planned: 180, notes: note },
-        { name: "Groceries", type: "Variable", planned: 450, notes: note },
-        { name: "Transport", type: "Variable", planned: 150, notes: note },
-        { name: "Eating out", type: "Variable", planned: 120, leftover_mode: "drop", notes: note },
-        { name: "Sadaqah", type: "Giving", planned: 150, notes: note },
-        { name: "Emergency savings", type: "Savings", planned: 500, goal_id: (goal as unknown as { id: string }).id, notes: note },
+        { name: "Rent", type: "Fixed", planned: 1200, leftover_mode: "same" as const, goal_id: null, notes: note },
+        { name: "Utilities", type: "Fixed", planned: 180, leftover_mode: "same" as const, goal_id: null, notes: note },
+        { name: "Groceries", type: "Variable", planned: 450, leftover_mode: "same" as const, goal_id: null, notes: note },
+        { name: "Transport", type: "Variable", planned: 150, leftover_mode: "same" as const, goal_id: null, notes: note },
+        { name: "Eating out", type: "Variable", planned: 120, leftover_mode: "drop" as const, goal_id: null, notes: note },
+        { name: "Sadaqah", type: "Giving", planned: 150, leftover_mode: "same" as const, goal_id: null, notes: note },
+        { name: "Emergency savings", type: "Savings", planned: 500, goal_id: (goal as unknown as { id: string }).id, leftover_mode: "same" as const, notes: note },
       ])
       .select(),
   );
