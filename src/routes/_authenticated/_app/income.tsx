@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
@@ -31,7 +32,7 @@ const NONE = "__none";
 
 function Page() {
   const { data: profile } = useQuery(profileQuery);
-  const { data: entries = [] } = useQuery(incomeEntriesQuery);
+  const { data: entries = [], isLoading: pageLoading } = useQuery(incomeEntriesQuery);
   const { data: sources = [] } = useQuery(incomeSourcesQuery);
   const { data: accounts = [] } = useQuery(accountsQuery);
   const invalidate = useInvalidateData();
@@ -54,6 +55,7 @@ function Page() {
     return undefined;
   }
 
+  if (pageLoading) return <><PageHeader eyebrow="Money in" title="Income" /><PageSkeleton /></>;
   return (
     <>
       <PageHeader

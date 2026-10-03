@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useState, type ReactNode } from "react";
 import { Plus, Trash2 } from "lucide-react";
@@ -93,7 +94,7 @@ function InlineInput({
 function Page() {
   const { data: profile } = useQuery(profileQuery);
   const { data: sources = [] } = useQuery(incomeSourcesQuery);
-  const { data: categories = [] } = useQuery(categoriesQuery);
+  const { data: categories = [], isLoading: pageLoading } = useQuery(categoriesQuery);
   const { data: goals = [] } = useQuery(goalsQuery);
   const invalidate = useInvalidateData();
   const cur = profile?.currency ?? "USD";
@@ -135,6 +136,7 @@ function Page() {
     return run(supabase.from("categories").insert({ name: `New category ${n}`, type: "Variable", planned: 0 }));
   }
 
+  if (pageLoading) return <><PageHeader eyebrow="Plan" title="Budget" /><PageSkeleton /></>;
   return (
     <>
       <PageHeader eyebrow="Plan" title="Budget" />
