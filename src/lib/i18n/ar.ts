@@ -13,6 +13,8 @@ export const AR: Record<string, string> = {
   "Keep things right": "حافظ على الدقة", Preferences: "التفضيلات", "Budget tracker": "متتبع الميزانية",
   "Accounts & transfers": "الحسابات والتحويلات", Planners: "المخططات", "Everything else": "كل شيء آخر",
   Ramadan: "رمضان", Qurbani: "الأضحية", "Hajj & Umrah": "الحج والعمرة",
+  Plan: "الخطة", Purification: "التطهير", "Quick entry": "إدخال سريع", "Add transaction": "إضافة معاملة",
+  Track: "المتابعة", "Where money lives": "أين تُحفظ الأموال", Status: "الحالة", "#": "#",
   // Settings
   Profile: "الملف الشخصي", "Name (optional)": "الاسم (اختياري)", Currency: "العملة", "Plan start month": "شهر بداية الخطة",
   "Save changes": "حفظ التغييرات", "Saving…": "جارٍ الحفظ…", Appearance: "المظهر", Language: "اللغة",
