@@ -44,6 +44,30 @@ export type Database = {
         }
         Relationships: []
       }
+      archived_entries: {
+        Row: {
+          archived_at: string
+          data: Json
+          id: string
+          kind: string
+          user_id: string
+        }
+        Insert: {
+          archived_at?: string
+          data: Json
+          id?: string
+          kind: string
+          user_id?: string
+        }
+        Update: {
+          archived_at?: string
+          data?: Json
+          id?: string
+          kind?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       categories: {
         Row: {
           created_at: string
@@ -553,7 +577,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      start_new_year: {
+        Args: { accounts: Json; goals: Json; new_plan_start: string }
+        Returns: undefined
+      }
     }
     Enums: {
       category_type: "Fixed" | "Variable" | "Giving" | "Savings"

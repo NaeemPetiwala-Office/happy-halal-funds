@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import { MonthPicker } from "@/components/MonthPicker";
 import { Label } from "@/components/ui/label";
 import { useTheme } from "@/components/ThemeToggle";
+import { ModulesCard, NewYearCard } from "@/components/SettingsExtras";
 import { CURRENCIES } from "@/lib/currencies";
 import { dateToMonthInput, monthInputToDate, profileQuery } from "@/lib/profile";
 
@@ -60,7 +61,7 @@ function SettingsPage() {
   return (
     <>
       <PageHeader eyebrow="Preferences" title="Settings" />
-      <div className="relative mx-auto -mt-6 max-w-5xl space-y-5 px-5 md:px-16">
+      <div className="relative mx-auto -mt-6 max-w-5xl space-y-5 px-5 pb-24 md:px-16">
         <form onSubmit={save} className="space-y-5 rounded-3xl border bg-card p-6 shadow-soft">
           <h2 className="text-lg">Profile</h2>
           <div className="grid gap-5 md:grid-cols-3">
@@ -102,6 +103,9 @@ function SettingsPage() {
             Switch to {dark ? "light" : "dark"}
           </Button>
         </div>
+
+        <ModulesCard />
+        <NewYearCard />
 
         <Button variant="outline" onClick={signOut} className="h-11">
           <LogOut /> Sign out

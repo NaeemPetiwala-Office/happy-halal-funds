@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Gift } from "lucide-react";
-import { PlaceholderPage } from "@/components/PageHeader";
+import { PlannerPage } from "@/components/PlannerPage";
 
 export const Route = createFileRoute("/_authenticated/_app/qurbani")({
   head: () => ({
@@ -15,14 +15,5 @@ export const Route = createFileRoute("/_authenticated/_app/qurbani")({
 });
 
 function Page() {
-  return (
-    <>
-      <PlaceholderPage
-        eyebrow="Optional planner"
-        title="Qurbani"
-        description="Save towards your Qurbani share ahead of Eid al-Adha."
-        icon={<Gift className="size-6" />}
-      />
-    </>
-  );
+  return <PlannerPage module="qurbani" title="Qurbani" eyebrow="Optional planner" icon={<Gift className="size-6" />} suggestions={["Qurbani share", "Eid clothes", "Eid gifts", "Hosting family"]} />;
 }

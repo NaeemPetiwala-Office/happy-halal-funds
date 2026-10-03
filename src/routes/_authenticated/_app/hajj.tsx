@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Plane } from "lucide-react";
-import { PlaceholderPage } from "@/components/PageHeader";
+import { PlannerPage } from "@/components/PlannerPage";
 
 export const Route = createFileRoute("/_authenticated/_app/hajj")({
   head: () => ({
@@ -15,14 +15,5 @@ export const Route = createFileRoute("/_authenticated/_app/hajj")({
 });
 
 function Page() {
-  return (
-    <>
-      <PlaceholderPage
-        eyebrow="Optional planner"
-        title="Hajj & Umrah"
-        description="Plan and save for Hajj or Umrah as a cash goal."
-        icon={<Plane className="size-6" />}
-      />
-    </>
-  );
+  return <PlannerPage module="hajj" title="Hajj & Umrah" eyebrow="Optional planner" icon={<Plane className="size-6" />} suggestions={["Package", "Flights", "Visa", "Ihram & essentials", "Spending money"]} />;
 }
