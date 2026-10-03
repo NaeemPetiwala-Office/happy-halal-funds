@@ -1,55 +1,61 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ShieldCheck, Sparkles, HandCoins } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Halal Budget Planner" },
+      { title: "Halal Budget Planner — Interest-free monthly budgeting" },
       {
         name: "description",
-        content:
-          "Plan your finances with confidence — a budgeting companion built around halal principles.",
+        content: "Plan income against categories, carry leftovers forward, and track Zakat — private and interest-free.",
       },
-      { property: "og:title", content: "Halal Budget Planner" },
+      { property: "og:title", content: "Halal Budget Planner — Interest-free monthly budgeting" },
       {
         property: "og:description",
-        content:
-          "Plan your finances with confidence — a budgeting companion built around halal principles.",
+        content: "Plan income against categories, carry leftovers forward, and track Zakat — private and interest-free.",
       },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Index,
 });
 
+const points = [
+  { icon: Sparkles, title: "Leftovers carry forward", text: "Unspent money rolls into next month automatically." },
+  { icon: HandCoins, title: "Zakat & giving", text: "Transparent Zakat estimates and interest purification." },
+  { icon: ShieldCheck, title: "Private by design", text: "No ads, no trackers, no bank scraping." },
+];
+
 function Index() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-background px-6 text-center">
-      <div className="flex flex-col items-center">
-        <svg
-          aria-hidden="true"
-          viewBox="0 0 48 48"
-          className="h-12 w-12 text-primary"
-          fill="none"
-        >
-          <path
-            d="M24 4 L30 18 L44 24 L30 30 L24 44 L18 30 L4 24 L18 18 Z"
-            fill="currentColor"
-            opacity="0.9"
-          />
-          <circle cx="24" cy="24" r="5" fill="var(--color-background)" />
-        </svg>
-
-        <h1 className="mt-8 font-display text-5xl font-normal tracking-tight text-foreground sm:text-6xl">
-          Halal Budget Planner
-        </h1>
-
-        <div className="mt-6 h-px w-16 bg-primary/40" aria-hidden="true" />
-
-        <p className="mt-6 max-w-md text-balance font-sans text-base leading-relaxed text-muted-foreground sm:text-lg">
-          Welcome. A calm, principled way to plan your money — coming soon.
-        </p>
-      </div>
-    </main>
+    <div className="min-h-screen">
+      <section className="bg-header-gradient relative rounded-b-[3rem] px-6 pb-24 pt-14 text-primary-foreground">
+        <ThemeToggle className="glass-btn absolute end-5 top-5 text-primary-foreground" />
+        <div className="mx-auto max-w-3xl">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] opacity-75">Halal Budget Planner</p>
+          <h1 className="mt-3 text-4xl font-bold leading-tight md:text-5xl">A calm, interest-free way to plan every month.</h1>
+          <p className="mt-4 max-w-xl opacity-85">Give every unit of income a job, log spending in seconds, and let leftovers move forward on their own.</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <Link to="/auth" className="rounded-full bg-card px-6 py-3 text-sm font-semibold text-foreground shadow-soft">
+              Get started
+            </Link>
+            <Link to="/dashboard" className="glass-btn rounded-full px-6 py-3 text-sm font-semibold">
+              Open my planner
+            </Link>
+          </div>
+        </div>
+      </section>
+      <section className="mx-auto -mt-12 grid max-w-3xl gap-4 px-5 pb-16 md:grid-cols-3">
+        {points.map(({ icon: Icon, title, text }) => (
+          <div key={title} className="rounded-3xl border bg-card p-6 shadow-soft">
+            <div className="flex size-11 items-center justify-center rounded-2xl bg-mint text-mint-foreground">
+              <Icon className="size-5" />
+            </div>
+            <h2 className="mt-4 text-base">{title}</h2>
+            <p className="mt-1 text-sm text-muted-foreground">{text}</p>
+          </div>
+        ))}
+      </section>
+    </div>
   );
 }
