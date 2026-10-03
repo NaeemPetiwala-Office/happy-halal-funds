@@ -16,7 +16,7 @@ export function todayISO(): string {
 
 /** 24 months starting at planStart ("YYYY-MM-01"), as "YYYY-MM". */
 export function planMonths(planStart: string): string[] {
-  const [y, m] = planStart.split("-").map(Number);
+  const [y, m] = planStart.split("-").map(Number) as [number, number, number];
   return Array.from({ length: 24 }, (_, i) => {
     const d = new Date(y, m - 1 + i, 1);
     return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
@@ -24,11 +24,11 @@ export function planMonths(planStart: string): string[] {
 }
 
 export function monthLabel(ym: string): string {
-  const [y, m] = ym.split("-").map(Number);
+  const [y, m] = ym.split("-").map(Number) as [number, number, number];
   return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: "long", year: "numeric" });
 }
 
 export function dateLabel(iso: string): string {
-  const [y, m, d] = iso.split("-").map(Number);
+  const [y, m, d] = iso.split("-").map(Number) as [number, number, number];
   return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
 }

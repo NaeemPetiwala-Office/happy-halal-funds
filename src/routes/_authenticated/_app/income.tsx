@@ -45,7 +45,7 @@ function Page() {
   const total = filtered.reduce((s, e) => s + Number(e.amount), 0);
   const expected = sources.reduce((s, x) => s + Number(x.monthly_amount), 0);
 
-  async function remove(e: IncomeEntry) {
+  async function remove(e: IncomeEntry): Promise<unknown> {
     if (!confirm("Delete this income entry?")) return;
     const { error } = await supabase.from("income_entries").delete().eq("id", e.id);
     if (error) return toast.error(friendlyError(error));
@@ -156,7 +156,7 @@ function IncomeForm({ initial, onDone }: { initial?: IncomeEntry; onDone: () => 
   const [note, setNote] = useState(initial?.note ?? "");
   const [saving, setSaving] = useState(false);
 
-  async function save() {
+  async function save(): Promise<unknown> {
     const n = Number(amount);
     if (!amount || !Number.isFinite(n) || n <= 0) return toast.error("Enter an amount greater than 0.");
     if (!date) return toast.error("Choose a date.");

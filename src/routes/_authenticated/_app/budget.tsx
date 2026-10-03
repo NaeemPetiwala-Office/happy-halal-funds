@@ -121,14 +121,14 @@ function Page() {
   const updateCategory = (c: Category, patch: Partial<Category>) =>
     run(supabase.from("categories").update(patch).eq("id", c.id));
 
-  async function addSource() {
+  async function addSource(): Promise<unknown> {
     if (sources.length >= 5) return toast.error("You can have up to 5 income sources.");
     let n = sources.length + 1;
     while (sources.some((s) => s.name === `Income ${n}`)) n++;
     await run(supabase.from("income_sources").insert({ name: `Income ${n}`, monthly_amount: 0 }));
   }
 
-  async function addCategory() {
+  async function addCategory(): Promise<unknown> {
     if (!canAddCategory(categories.length)) return toast.error(`You can have up to ${MAX_CATEGORIES} categories.`);
     let n = categories.length + 1;
     while (categories.some((c) => c.name === `New category ${n}`)) n++;

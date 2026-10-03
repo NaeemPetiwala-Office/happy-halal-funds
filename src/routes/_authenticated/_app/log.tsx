@@ -59,7 +59,7 @@ function Page() {
   });
   const total = filtered.reduce((s, t) => s + Number(t.amount), 0);
 
-  async function remove(t: Transaction) {
+  async function remove(t: Transaction): Promise<unknown> {
     if (!confirm("Delete this transaction?")) return;
     const { error } = await supabase.from("transactions").delete().eq("id", t.id);
     if (error) return toast.error(friendlyError(error));

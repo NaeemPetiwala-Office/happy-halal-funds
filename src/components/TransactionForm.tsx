@@ -49,7 +49,7 @@ export function TransactionForm({
     });
   };
 
-  async function save(another: boolean) {
+  async function save(another: boolean): Promise<unknown> {
     const value = Number(amount);
     if (!amount || !Number.isFinite(value) || value === 0) return toast.error("Enter an amount (not zero).");
     if (!categoryId) return toast.error("Choose a category.");
