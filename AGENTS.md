@@ -17,3 +17,4 @@
 - Derived numbers (carry-over, balances, Zakat, goals) are computed in `src/lib/engine` from raw rows and never stored.
 - Theme is a `dark` class on `<html>` persisted in localStorage and applied by an inline head script to avoid a flash.
 - Use logical spacing utilities (`ps-`, `pe-`, `ms-`, `start-`, `end-`) so RTL layouts work.
+- Table reads go through shared query options in `src/lib/data.ts` (keys under `["data", ...]`); after any write call `useInvalidateData()` so every screen refreshes together.
