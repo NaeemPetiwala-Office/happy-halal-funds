@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ShieldCheck, Sparkles, HandCoins } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -36,12 +37,12 @@ function Index() {
           <h1 className="mt-3 text-4xl font-bold leading-tight md:text-5xl">A calm, interest-free way to plan every month.</h1>
           <p className="mt-4 max-w-xl opacity-85">Give every unit of income a job, log spending in seconds, and let leftovers move forward on their own.</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/auth" className="rounded-full bg-card px-6 py-3 text-sm font-semibold text-foreground shadow-soft">
-              Get started
-            </Link>
-            <Link to="/dashboard" className="glass-btn rounded-full px-6 py-3 text-sm font-semibold">
-              Open my planner
-            </Link>
+            <Button asChild size="lg" variant="secondary" className="shadow-soft">
+              <Link to="/auth">Get started</Link>
+            </Button>
+            <Button asChild size="lg" variant="outline" className="border-primary-foreground/40 bg-card text-foreground shadow-soft hover:bg-secondary">
+              <Link to="/auth">Open my planner</Link>
+            </Button>
           </div>
         </div>
       </section>
