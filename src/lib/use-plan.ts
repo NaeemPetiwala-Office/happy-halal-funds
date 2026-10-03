@@ -19,12 +19,17 @@ export function usePlan() {
     const p = profile.data;
     if (loading || !p) return { loading: true as const };
     const today = todayISO();
+    const normGoals = (goals.data ?? []).map((g) => ({
+      ...g,
+      target: g.target == null ? null : Number(g.target),
+      opening_saved: Number(g.opening_saved),
+    }));
     const plan = computePlan({
       planStart: p.plan_start,
       today,
       categories: (cats.data ?? []).map((c) => ({ ...c, planned: Number(c.planned) })),
       transactions: txs.data ?? [],
-      goals: (goals.data ?? []).map((g) => ({ ...g, target: g.target == null ? null : Number(g.target), opening_saved: Number(g.opening_saved) })),
+      goals: normGoals,
     });
     const rawK = monthIndex(p.plan_start, p.selected_month);
     const monthValid = rawK >= 0 && rawK < PLAN_MONTHS;
@@ -41,7 +46,7 @@ export function usePlan() {
       plannedIncome,
       incomeEntries,
       summary: monthSummary(plan, k, incomeEntries, plannedIncome),
-      goals: goalTotals(plan, plan.categories.length ? (goals.data ?? []).map((g) => ({ ...g, target: g.target == null ? null : Number(g.target), opening_saved: Number(g.opening_saved) })) : (goals.data ?? []).map((g) => ({ ...g, target: g.target == null ? null : Number(g.target), opening_saved: Number(g.opening_saved) })), txs.data ?? []),
+      goals: goalTotals(plan, normGoals, txs.data ?? []),
     };
   }, [loading, profile.data, cats.data, txs.data, goals.data, income.data, sources.data]);
 }
