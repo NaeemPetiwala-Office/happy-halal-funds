@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
 import { Pencil, Search, Trash2 } from "lucide-react";
@@ -111,7 +112,7 @@ function Page() {
             <span className="font-display font-semibold">Total {formatMoney(total, cur)}</span>
           </div>
           {isLoading ? (
-            <p className="p-8 text-center text-sm text-muted-foreground">Loading…</p>
+            <PageSkeleton />
           ) : filtered.length === 0 ? (
             <p className="p-8 text-center text-sm text-muted-foreground">
               {txs.length ? "No transactions match these filters." : "No transactions yet. Tap + to add your first."}

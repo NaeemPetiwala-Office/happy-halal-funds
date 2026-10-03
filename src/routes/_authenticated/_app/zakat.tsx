@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
@@ -74,7 +75,7 @@ function Page() {
       <PageHeader eyebrow="Purify your wealth" title="Zakat" />
       <div className="relative mx-auto -mt-6 flex max-w-6xl flex-col gap-5 px-5 pb-24 md:px-10">
         <Disclaimer />
-        {isLoading ? <p className="text-center text-muted-foreground">Loading…</p> : (
+        {isLoading ? <PageSkeleton /> : (
           <div className="grid gap-5 lg:grid-cols-2">
             <section className="space-y-4 rounded-3xl border bg-card p-5 shadow-soft">
               <h2 className="text-lg">Nisab and settings</h2>

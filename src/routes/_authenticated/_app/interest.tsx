@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
@@ -29,7 +30,7 @@ const selectCls = "h-11 rounded-full border bg-input px-4 text-sm focus-visible:
 
 function Page() {
   const { data: profile } = useQuery(profileQuery);
-  const { data: received = [] } = useQuery(interestReceivedQuery);
+  const { data: received = [], isLoading: pageLoading } = useQuery(interestReceivedQuery);
   const { data: given = [] } = useQuery(interestGivenQuery);
   const { data: accounts = [] } = useQuery(accountsQuery);
   const cur = profile?.currency ?? "USD";
@@ -37,6 +38,7 @@ function Page() {
   const t = interestTotals(received, given);
   const accName = new Map(accounts.map((a) => [a.id, a.name]));
 
+  if (pageLoading) return <><PageHeader eyebrow="Purification" title="Interest tracker" /><PageSkeleton /></>;
   return (
     <>
       <PageHeader eyebrow="Purification" title="Interest tracker" />

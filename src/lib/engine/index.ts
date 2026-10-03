@@ -426,3 +426,11 @@ export function monthAlerts(plan: Plan, k: number, summary: MonthSummary, goals:
   return out;
 }
 export * from "./extras";
+
+/** Selected month index; anything invalid or outside the plan falls back to the first month and is flagged. */
+export function resolveSelectedMonth(planStart: string, selected: string | null | undefined): { k: number; valid: boolean } {
+  if (!selected || !/^\d{4}-\d{2}/.test(selected)) return { k: 0, valid: false };
+  const k = monthIndex(planStart, selected);
+  if (!Number.isFinite(k) || k < 0 || k >= PLAN_MONTHS) return { k: 0, valid: false };
+  return { k, valid: true };
+}

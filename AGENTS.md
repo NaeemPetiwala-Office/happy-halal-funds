@@ -21,3 +21,7 @@
 - Screens get derived numbers via `usePlan()` (src/lib/use-plan.ts), which feeds raw rows into the engine for the globally selected month stored on the profile.
 - "Start a new year" runs in one database function (`start_new_year`) that moves old entries into `archived_entries` (kept as JSON, not counted) — atomic, and archived rows never count toward row caps.
 - Optional planners store their dates and items as JSON in `module_plans` (one row per module) and are visible only when the matching `profiles.modules` flag is on.
+- UI text is translated with `translate()`/`useLocale()` from `src/lib/i18n` (English strings are the keys; missing keys fall back to English); locale lives on `profiles.locale` and is mirrored to `<html dir/lang>` + localStorage for a flash-free reload.
+- Offline: the query cache is persisted to localStorage (cleared on sign-out) and a `vite-plugin-pwa` service worker is registered only from `src/lib/pwa-register.ts`, never in dev/preview — keeps preview safe while the published app stays readable offline.
+- CSV import/export logic is pure in `src/lib/csv.ts` (formula-escaped export, exact-name category matching on import) so it is unit-tested.
+- `src/test/privacy.test.ts` fails the test run if any analytics/tracker package or script appears; `scripts/rls-check.ts` is the manual two-user RLS check.

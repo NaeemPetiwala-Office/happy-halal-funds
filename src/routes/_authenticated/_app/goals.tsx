@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Pencil, Plus, Trash2 } from "lucide-react";
@@ -32,7 +33,7 @@ function GoalsPage() {
   const plan = usePlan();
   const invalidate = useInvalidateData();
   const [editing, setEditing] = useState<Goal | "new" | null>(null);
-  if (plan.loading) return <><PageHeader eyebrow="Saving up" title="Goals" /><p className="p-8 text-center text-muted-foreground">Loading goals…</p></>;
+  if (plan.loading) return <><PageHeader eyebrow="Saving up" title="Goals" /><PageSkeleton /></>;
   const currency = plan.currency;
 
   async function remove(goal: Goal) {
@@ -44,7 +45,7 @@ function GoalsPage() {
 
   return <>
     <PageHeader eyebrow="Saving up" title="Goals" actions={<Button variant="secondary" size="sm" onClick={() => setEditing("new")} disabled={rawGoals.length >= 10}><Plus /> Add goal</Button>} />
-    <main className="relative mx-auto -mt-6 flex max-w-6xl flex-col gap-5 px-5 pb-24 md:px-10">
+    <div className="relative mx-auto -mt-6 flex max-w-6xl flex-col gap-5 px-5 pb-24 md:px-10">
       {plan.goals.length === 0 ? <Empty text="Add a cash goal, then link a Savings category to it on the Budget page." /> : <>
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
           {plan.goals.map((total) => {
@@ -61,7 +62,7 @@ function GoalsPage() {
         </div>
         <section className="overflow-x-auto rounded-3xl border bg-card p-5 shadow-soft"><h2 className="mb-4 text-lg">Goal comparison</h2><table className="w-full min-w-[900px] text-sm"><thead className="text-muted-foreground"><tr><Th>Goal</Th><Th>Target</Th><Th>Total</Th><Th>Remaining</Th><Th>Progress</Th><Th>Monthly plan</Th><Th>Months to go</Th><Th>Auto-count</Th><Th>Status</Th></tr></thead><tbody>{plan.goals.map((g) => <tr key={g.goal.id} className="border-t"><Td>{g.goal.name}</Td><Td>{g.goal.target == null ? "—" : formatMoney(g.goal.target, currency)}</Td><Td>{formatMoney(g.saved, currency)}</Td><Td>{g.remaining == null ? "—" : formatMoney(g.remaining, currency)}</Td><Td>{g.progress == null ? "—" : `${Math.round(g.progress)}%`}</Td><Td>{formatMoney(g.monthlyPlan, currency)}</Td><Td>{g.monthsToGo ?? "—"}</Td><Td>{g.goal.auto_count ? "On" : "Off"}</Td><Td>{g.remaining === 0 ? "Reached" : "In progress"}</Td></tr>)}</tbody></table></section>
       </>}
-    </main>
+    </div>
     <Dialog open={editing != null} onOpenChange={(open) => !open && setEditing(null)}><DialogContent><DialogHeader><DialogTitle>{editing === "new" ? "Add goal" : "Edit goal"}</DialogTitle></DialogHeader>{editing && <GoalForm initial={editing === "new" ? undefined : editing} goals={rawGoals} onDone={() => setEditing(null)} />}</DialogContent></Dialog>
   </>;
 }

@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useState } from "react";
 import { AlertTriangle, Info, PiggyBank, TrendingDown, Wallet, Scale, Percent } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -39,7 +40,7 @@ function Page() {
     return (
       <>
         <PageHeader eyebrow="Overview" title="Dashboard" />
-        <p className="p-10 text-center text-sm text-muted-foreground">Loading…</p>
+        <PageSkeleton />
       </>
     );
   }

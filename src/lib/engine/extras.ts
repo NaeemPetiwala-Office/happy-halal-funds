@@ -2,7 +2,7 @@
  * Zakat, interest, health checks, optional planners and setup checklist.
  * Pure functions; everything derived from raw rows.
  */
-import { monthIndex, PLAN_MONTHS, type ECategory, type MonthSummary } from "./index";
+import { monthIndex, PLAN_MONTHS, resolveSelectedMonth, type ECategory, type MonthSummary } from "./index";
 
 const EPS = 0.005;
 
@@ -169,8 +169,8 @@ export function healthChecks(h: HealthInput): HealthCheck[] {
   const badRec = h.recurring.filter((r) => !r.category_id || !catIds.has(r.category_id));
   add("recurring-category", "Recurring items with unknown category", badRec.length > 0, "fix", `${badRec.map((r) => `"${r.name}"`).join(", ")} need a category.`, "Every recurring item has a category.", "/recurring");
 
-  const sk = monthIndex(h.planStart, h.selectedMonth);
-  add("selected-month", "Selected month", sk < 0 || sk >= PLAN_MONTHS, "fix", "The selected month is outside your plan. Pick a month again.", "The selected month is inside your plan.", "/dashboard");
+  const sel = resolveSelectedMonth(h.planStart, h.selectedMonth);
+  add("selected-month", "Selected month", !sel.valid, "fix", "The selected month is outside your plan, so the first month is shown. Pick a month again.", "The selected month is inside your plan.", "/dashboard");
 
   const plannedOut = h.categories.reduce((s, c) => s + Number(c.planned), 0);
   const over = plannedOut - h.plannedIncome;

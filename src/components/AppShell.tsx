@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { QuickAddProvider } from "./QuickAdd";
+import { useLocale } from "@/lib/i18n";
 import {
   LayoutDashboard,
   PlusCircle,
@@ -43,6 +44,7 @@ const sideLink =
 const sideActive = { className: "bg-secondary text-secondary-foreground" };
 
 export function AppShell({ children }: { children: ReactNode }) {
+  const { t } = useLocale();
   return (
     <QuickAddProvider>
     <div className="min-h-screen md:flex">
@@ -52,25 +54,23 @@ export function AppShell({ children }: { children: ReactNode }) {
             H
           </span>
           <span className="font-display text-sm font-semibold leading-tight">
-            Halal Budget
-            <br />
-            Planner
+            {t("Halal Budget Planner")}
           </span>
         </Link>
-        <nav aria-label="Main" className="flex flex-col gap-1">
+        <nav aria-label="Main navigation" className="flex flex-col gap-1">
           {PRIMARY_NAV.map(({ to, label, icon: Icon }) => (
             <Link key={to} to={to} className={sideLink} activeProps={sideActive}>
-              <Icon className="size-4" /> {label}
+              <Icon className="size-4" aria-hidden="true" /> {t(label)}
             </Link>
           ))}
         </nav>
-        <p className="mt-6 px-4 text-[11px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
-          Manage
+        <p className="mt-6 px-4 text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+          {t("Manage")}
         </p>
-        <nav aria-label="Manage" className="mt-2 flex flex-col gap-1 overflow-y-auto">
+        <nav aria-label="Manage navigation" className="mt-2 flex flex-col gap-1 overflow-y-auto">
           {SECONDARY_NAV.map(({ to, label, icon: Icon }) => (
             <Link key={to} to={to} className={sideLink} activeProps={sideActive}>
-              <Icon className="size-4" /> {label}
+              <Icon className="size-4" aria-hidden="true" /> {t(label)}
             </Link>
           ))}
         </nav>
@@ -79,18 +79,18 @@ export function AppShell({ children }: { children: ReactNode }) {
       <main className="min-w-0 flex-1 pb-28 md:pb-12">{children}</main>
 
       <nav
-        aria-label="Main"
+        aria-label="Main navigation (mobile)"
         className="fixed inset-x-3 bottom-3 z-40 flex justify-around rounded-full border bg-card/95 px-2 py-2 shadow-lift backdrop-blur md:hidden"
       >
         {PRIMARY_NAV.map(({ to, label, icon: Icon }) => (
           <Link
             key={to}
             to={to}
-            className="flex flex-1 flex-col items-center gap-0.5 rounded-full py-1.5 text-[11px] font-medium text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            className="flex flex-1 flex-col items-center gap-0.5 rounded-full py-1.5 text-xs font-medium text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             activeProps={{ className: "text-primary" }}
           >
-            <Icon className="size-5" />
-            {label}
+            <Icon className="size-5" aria-hidden="true" />
+            {t(label)}
           </Link>
         ))}
       </nav>
