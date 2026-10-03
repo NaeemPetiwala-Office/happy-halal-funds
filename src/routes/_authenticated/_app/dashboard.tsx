@@ -5,6 +5,7 @@ import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContai
 import { PageHeader } from "@/components/PageHeader";
 import { MonthSwitcher } from "@/components/MonthSwitcher";
 import { SampleDataCard } from "@/components/SampleDataCard";
+import { SetupChecklist } from "@/components/SetupChecklist";
 import { usePlan } from "@/lib/use-plan";
 import { CATEGORY_TYPES, monthAlerts, monthSummary } from "@/lib/engine";
 import { formatMoney, monthLabel } from "@/lib/format";
@@ -77,6 +78,7 @@ function Page() {
         </div>
 
         <SampleDataCard />
+        <SetupChecklist unallocated={p.plannedIncome - s.plannedOut} incomeEntries={p.incomeEntries.length} goals={p.goals.length} />
 
         <div className="grid gap-5 lg:grid-cols-2">
           <Panel title="Alerts">
