@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { profileQuery } from "@/lib/profile";
 import { Moon, Gift, Plane } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
 import { SECONDARY_NAV } from "@/components/AppShell";
@@ -16,9 +18,9 @@ export const Route = createFileRoute("/_authenticated/_app/more")({
 });
 
 const PLANNERS = [
-  { to: "/ramadan", label: "Ramadan", icon: Moon },
-  { to: "/qurbani", label: "Qurbani", icon: Gift },
-  { to: "/hajj", label: "Hajj & Umrah", icon: Plane },
+  { to: "/ramadan", key: "ramadan", label: "Ramadan", icon: Moon },
+  { to: "/qurbani", key: "qurbani", label: "Qurbani", icon: Gift },
+  { to: "/hajj", key: "hajj", label: "Hajj & Umrah", icon: Plane },
 ] as const;
 
 function Tile({ to, label, Icon }: { to: string; label: string; Icon: typeof Moon }) {
@@ -36,6 +38,9 @@ function Tile({ to, label, Icon }: { to: string; label: string; Icon: typeof Moo
 }
 
 function MorePage() {
+  const { data: profile } = useQuery(profileQuery);
+  const mods = (profile?.modules ?? {}) as Record<string, boolean>;
+  const planners = PLANNERS.filter((p) => mods[p.key]);
   return (
     <>
       <PageHeader eyebrow="Everything else" title="More" />
@@ -45,14 +50,15 @@ function MorePage() {
             <Tile key={to} to={to} label={label} Icon={icon} />
           ))}
         </div>
-        <div>
+        {planners.length > 0 && <div>
           <h2 className="mb-3 ps-2 text-sm font-semibold uppercase tracking-[0.14em] text-muted-foreground">Optional planners</h2>
           <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-            {PLANNERS.map(({ to, label, icon }) => (
+            {planners.map(({ to, label, icon }) => (
               <Tile key={to} to={to} label={label} Icon={icon} />
             ))}
           </div>
-        </div>
+        </div>}
+        <p className="ps-2 text-sm text-muted-foreground">Ramadan, Qurbani and Hajj &amp; Umrah planners can be switched on in <Link to="/settings" className="font-medium text-primary">Settings → Modules</Link>.</p>
       </div>
     </>
   );
