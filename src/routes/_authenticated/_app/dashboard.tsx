@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { LayoutDashboard } from "lucide-react";
 import { PlaceholderPage } from "@/components/PageHeader";
+import { SampleDataCard } from "@/components/SampleDataCard";
 
 export const Route = createFileRoute("/_authenticated/_app/dashboard")({
   head: () => ({
@@ -17,6 +18,7 @@ export const Route = createFileRoute("/_authenticated/_app/dashboard")({
 function Page() {
   return (
     <>
+      <div className="mx-auto max-w-5xl px-5 pt-6 md:px-16"><SampleDataCard /></div>
       <PlaceholderPage
         eyebrow="Overview"
         title="Dashboard"

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { QuickAddProvider } from "./QuickAdd";
 import {
   LayoutDashboard,
   PlusCircle,
@@ -41,6 +42,7 @@ const sideActive = { className: "bg-secondary text-secondary-foreground" };
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
+    <QuickAddProvider>
     <div className="min-h-screen md:flex">
       <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-e bg-card px-4 py-6 md:flex">
         <Link to="/dashboard" className="mb-8 flex items-center gap-3 px-2">
@@ -91,5 +93,6 @@ export function AppShell({ children }: { children: ReactNode }) {
         ))}
       </nav>
     </div>
+    </QuickAddProvider>
   );
 }
