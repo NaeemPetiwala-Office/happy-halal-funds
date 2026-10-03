@@ -25,7 +25,7 @@ describe("zakat", () => {
     expect(r.monthlySuggestion).toBe(70);
   });
   it("is zero when below nisab or no price entered", () => {
-    expect(zakatCalc({ ...zbase, basis: "Gold" }).due).toBe(0); // nisab 6998.4 < 8000? no: 8000 >= 6998.4
+    expect(zakatCalc({ ...zbase, basis: "Gold", gold_price: 100 }).due).toBe(0); // nisab 8748 > 8000
     expect(zakatCalc({ ...zbase, silver_price: null }).due).toBe(0);
     expect(zakatCalc({ ...zbase, lines: [{ kind: "asset", amount: 500 }] }).due).toBe(0);
   });
