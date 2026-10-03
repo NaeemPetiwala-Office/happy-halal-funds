@@ -51,6 +51,7 @@ function Page() {
     if (error) return toast.error(friendlyError(error));
     toast.success("Income deleted");
     invalidate();
+    return undefined;
   }
 
   return (
@@ -145,7 +146,7 @@ function Page() {
   );
 }
 
-function IncomeForm({ initial, onDone }: { initial?: IncomeEntry; onDone: () => void }) {
+function IncomeForm({ initial, onDone }: { initial?: IncomeEntry | undefined; onDone: () => void }) {
   const { data: sources = [] } = useQuery(incomeSourcesQuery);
   const { data: accounts = [] } = useQuery(accountsQuery);
   const invalidate = useInvalidateData();
@@ -176,6 +177,7 @@ function IncomeForm({ initial, onDone }: { initial?: IncomeEntry; onDone: () => 
     toast.success(initial ? "Income updated" : "Income added");
     invalidate();
     onDone();
+    return undefined;
   }
 
   return (

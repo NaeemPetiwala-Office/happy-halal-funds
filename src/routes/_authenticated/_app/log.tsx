@@ -65,6 +65,7 @@ function Page() {
     if (error) return toast.error(friendlyError(error));
     toast.success("Transaction deleted");
     invalidate();
+    return undefined;
   }
 
   return (

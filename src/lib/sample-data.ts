@@ -54,7 +54,7 @@ export async function seedSampleData() {
         { name: "Transport", type: "Variable", planned: 150, notes: note },
         { name: "Eating out", type: "Variable", planned: 120, leftover_mode: "drop", notes: note },
         { name: "Sadaqah", type: "Giving", planned: 150, notes: note },
-        { name: "Emergency savings", type: "Savings", planned: 500, goal_id: goal.id, notes: note },
+        { name: "Emergency savings", type: "Savings", planned: 500, goal_id: (goal as unknown as { id: string }).id, notes: note },
       ])
       .select(),
   );

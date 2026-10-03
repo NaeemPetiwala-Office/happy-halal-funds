@@ -125,14 +125,14 @@ function Page() {
     if (sources.length >= 5) return toast.error("You can have up to 5 income sources.");
     let n = sources.length + 1;
     while (sources.some((s) => s.name === `Income ${n}`)) n++;
-    await run(supabase.from("income_sources").insert({ name: `Income ${n}`, monthly_amount: 0 }));
+    return run(supabase.from("income_sources").insert({ name: `Income ${n}`, monthly_amount: 0 }));
   }
 
   async function addCategory(): Promise<unknown> {
     if (!canAddCategory(categories.length)) return toast.error(`You can have up to ${MAX_CATEGORIES} categories.`);
     let n = categories.length + 1;
     while (categories.some((c) => c.name === `New category ${n}`)) n++;
-    await run(supabase.from("categories").insert({ name: `New category ${n}`, type: "Variable", planned: 0 }));
+    return run(supabase.from("categories").insert({ name: `New category ${n}`, type: "Variable", planned: 0 }));
   }
 
   return (
@@ -366,7 +366,7 @@ function Page() {
   );
 }
 
-function Stat({ label, value, tone = "normal", hint }: { label: string; value: string; tone?: "normal" | "bad"; hint?: string }) {
+function Stat({ label, value, tone = "normal", hint }: { label: string; value: string; tone?: "normal" | "bad"; hint?: string | undefined }) {
   return (
     <div className={`rounded-3xl border bg-card p-5 shadow-soft ${tone === "bad" ? "border-destructive/50" : ""}`}>
       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-muted-foreground">{label}</p>
