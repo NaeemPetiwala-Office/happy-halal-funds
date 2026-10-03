@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { ThemeToggle } from "./ThemeToggle";
 
 export function PageHeader({
   eyebrow,
@@ -19,7 +18,6 @@ export function PageHeader({
         </div>
         <div className="flex items-center gap-2">
           {actions}
-          <ThemeToggle className="glass-btn text-primary-foreground" />
         </div>
       </div>
     </header>

@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { PageHeader } from "@/components/PageHeader";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MonthPicker } from "@/components/MonthPicker";
 import { Label } from "@/components/ui/label";
 import { useTheme } from "@/components/ThemeToggle";
 import { CURRENCIES } from "@/lib/currencies";
@@ -45,7 +46,7 @@ function SettingsPage() {
       .eq("user_id", profile.user_id);
     setBusy(false);
     if (error) { toast.error(error.message); return; }
-    await qc.invalidateQueries({ queryKey: profileQuery.queryKey });
+    await qc.refetchQueries({ queryKey: profileQuery.queryKey, type: "all" });
     toast.success("Settings saved");
   }
 
@@ -84,7 +85,7 @@ function SettingsPage() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="month">Plan start month</Label>
-              <Input id="month" type="month" required value={month} onChange={(e) => setMonth(e.target.value)} />
+              <MonthPicker id="month" value={month} onChange={setMonth} />
             </div>
           </div>
           <Button type="submit" className="h-11 px-8" disabled={busy}>

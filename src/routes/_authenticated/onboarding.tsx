@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { MonthPicker } from "@/components/MonthPicker";
 import { Label } from "@/components/ui/label";
 import { CURRENCIES } from "@/lib/currencies";
 import { currentMonthInput, monthInputToDate, profileQuery } from "@/lib/profile";
@@ -51,7 +52,7 @@ function Onboarding() {
       .eq("user_id", user.id);
     setBusy(false);
     if (error) { toast.error(error.message); return; }
-    await qc.invalidateQueries({ queryKey: profileQuery.queryKey });
+    await qc.refetchQueries({ queryKey: profileQuery.queryKey, type: "all" });
     navigate({ to: "/dashboard", replace: true });
   }
 
@@ -105,7 +106,7 @@ function Onboarding() {
           {step === 2 && (
             <div className="space-y-2">
               <Label htmlFor="month">Which month does your plan start?</Label>
-              <Input id="month" type="month" required value={month} onChange={(e) => setMonth(e.target.value)} />
+              <MonthPicker id="month" value={month} onChange={setMonth} />
               <p className="ps-4 text-xs text-muted-foreground">Your plan covers 24 months from the 1st of this month.</p>
             </div>
           )}
