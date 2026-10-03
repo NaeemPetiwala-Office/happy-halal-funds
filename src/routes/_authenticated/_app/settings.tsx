@@ -11,6 +11,8 @@ import { MonthPicker } from "@/components/MonthPicker";
 import { Label } from "@/components/ui/label";
 import { useTheme } from "@/components/ThemeToggle";
 import { ModulesCard, NewYearCard } from "@/components/SettingsExtras";
+import { DataCard } from "@/components/DataCard";
+import { applyLocale, LOCALES, useLocale, type Locale } from "@/lib/i18n";
 import { CURRENCIES } from "@/lib/currencies";
 import { dateToMonthInput, monthInputToDate, profileQuery } from "@/lib/profile";
 
@@ -36,6 +38,15 @@ function SettingsPage() {
   const [currency, setCurrency] = useState(profile?.currency ?? "USD");
   const [month, setMonth] = useState(dateToMonthInput(profile?.plan_start));
   const [busy, setBusy] = useState(false);
+  const { t, locale } = useLocale();
+
+  async function changeLocale(l: Locale) {
+    if (!profile) return;
+    applyLocale(l);
+    qc.setQueryData(profileQuery.queryKey, (old) => (old ? { ...old, locale: l } : old));
+    const { error } = await supabase.from("profiles").update({ locale: l }).eq("user_id", profile.user_id);
+    if (error) toast.error(error.message);
+  }
 
   async function save(e: FormEvent) {
     e.preventDefault();
@@ -48,7 +59,7 @@ function SettingsPage() {
     setBusy(false);
     if (error) { toast.error(error.message); return; }
     await qc.refetchQueries({ queryKey: profileQuery.queryKey, type: "all" });
-    toast.success("Settings saved");
+    toast.success(t("Settings saved"));
   }
 
   async function signOut() {
@@ -61,17 +72,17 @@ function SettingsPage() {
 
   return (
     <>
-      <PageHeader eyebrow="Preferences" title="Settings" />
+      <PageHeader eyebrow={t("Preferences")} title={t("Settings")} />
       <div className="relative mx-auto -mt-6 max-w-5xl space-y-5 px-5 pb-24 md:px-16">
         <form onSubmit={save} className="space-y-5 rounded-3xl border bg-card p-6 shadow-soft">
-          <h2 className="text-lg">Profile</h2>
+          <h2 className="text-lg">{t("Profile")}</h2>
           <div className="grid gap-5 md:grid-cols-3">
             <div className="space-y-2">
-              <Label htmlFor="name">Name (optional)</Label>
+              <Label htmlFor="name">{t("Name (optional)")}</Label>
               <Input id="name" maxLength={60} value={name} onChange={(e) => setName(e.target.value)} />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="currency">Currency</Label>
+              <Label htmlFor="currency">{t("Currency")}</Label>
               <select
                 id="currency"
                 value={currency}
@@ -86,30 +97,43 @@ function SettingsPage() {
               </select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="month">Plan start month</Label>
+              <Label htmlFor="month">{t("Plan start month")}</Label>
               <MonthPicker id="month" value={month} onChange={setMonth} />
             </div>
           </div>
           <Button type="submit" className="h-11 px-8" disabled={busy}>
-            {busy ? "Saving…" : "Save changes"}
+            {busy ? t("Saving…") : t("Save changes")}
           </Button>
         </form>
 
         <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border bg-card p-6 shadow-soft">
           <div>
-            <h2 className="text-lg">Appearance</h2>
-            <p className="text-sm text-muted-foreground">{dark ? "Dark" : "Light"} theme</p>
+            <h2 className="text-lg">{t("Appearance")}</h2>
+            <p className="text-sm text-muted-foreground">{t(dark ? "Dark theme" : "Light theme")}</p>
           </div>
           <Button variant="outline" onClick={toggle}>
-            Switch to {dark ? "light" : "dark"}
+            {t(dark ? "Switch to light" : "Switch to dark")}
           </Button>
         </div>
 
+        <div className="flex flex-wrap items-center justify-between gap-4 rounded-3xl border bg-card p-6 shadow-soft">
+          <Label htmlFor="locale" className="text-lg font-display">{t("Language")}</Label>
+          <select
+            id="locale"
+            value={locale}
+            onChange={(e) => changeLocale(e.target.value as Locale)}
+            className="h-11 rounded-full border bg-input px-5 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+          >
+            {LOCALES.map((l) => <option key={l.code} value={l.code}>{l.label}</option>)}
+          </select>
+        </div>
+
+        <DataCard />
         <ModulesCard />
         <NewYearCard />
 
         <Button variant="outline" onClick={signOut} className="h-11">
-          <LogOut /> Sign out
+          <LogOut /> {t("Sign out")}
         </Button>
       </div>
     </>

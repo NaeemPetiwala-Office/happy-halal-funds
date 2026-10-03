@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { translate } from "@/lib/i18n";
 
 export function PageHeader({
   eyebrow,
@@ -13,8 +14,8 @@ export function PageHeader({
     <header className="bg-header-gradient rounded-b-[2.5rem] px-5 pb-10 pt-8 text-primary-foreground shadow-soft md:mx-6 md:mt-6 md:rounded-[2.5rem] md:px-10">
       <div className="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.18em] opacity-75">{eyebrow}</p>
-          <h1 className="mt-2 text-3xl font-bold md:text-4xl">{title}</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.18em] opacity-90">{translate(eyebrow)}</p>
+          <h1 className="mt-2 text-3xl font-bold md:text-4xl">{translate(title)}</h1>
         </div>
         <div className="flex items-center gap-2">
           {actions}

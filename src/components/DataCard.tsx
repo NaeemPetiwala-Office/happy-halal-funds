@@ -40,7 +40,7 @@ export function DataCard() {
   function exportGoals() {
     if (plan.loading) return;
     download("goals.csv", toCSV(["Name", "Priority", "Target", "Opening saved", "Saved from log", "Auto-counted", "Total saved", "Remaining", "Progress %", "Monthly plan", "Months to go"],
-      plan.goals.map((g) => [g.goal.name, (g.goal as { priority?: string }).priority ?? "", g.goal.target ?? "", g.goal.opening_saved, g.fromLog, g.auto, g.saved, g.remaining, Math.round(g.progress), g.monthlyPlan, g.monthsToGo ?? ""])));
+      plan.goals.map((g) => [g.goal.name, (g.goal as { priority?: string }).priority ?? "", g.goal.target ?? "", g.goal.opening_saved, g.savedFromLog, g.autoCounted, g.saved, g.remaining ?? "", g.progress == null ? "" : Math.round(g.progress), g.monthlyPlan, g.monthsToGo ?? "", g.estimatedCompletion ?? ""])));
   }
 
   return (
