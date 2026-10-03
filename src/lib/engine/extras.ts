@@ -2,7 +2,7 @@
  * Zakat, interest, health checks, optional planners and setup checklist.
  * Pure functions; everything derived from raw rows.
  */
-import { monthIndex, PLAN_MONTHS, type ECategory, type MonthSummary } from "./index";
+import { monthIndex, PLAN_MONTHS, resolveSelectedMonth, type ECategory, type MonthSummary } from "./index";
 
 const EPS = 0.005;
 
