@@ -38,7 +38,7 @@ function GoalsPage() {
   async function remove(goal: Goal) {
     if (!confirm(`Delete goal "${goal.name}"? Linked categories will keep their budgets but lose this goal.`)) return;
     const { error } = await supabase.from("goals").delete().eq("id", goal.id);
-    if (error) return toast.error(friendlyError(error));
+    if (error) { toast.error(friendlyError(error)); return; }
     invalidate(); toast.success("Goal deleted");
   }
 
@@ -66,16 +66,16 @@ function GoalsPage() {
   </>;
 }
 
-function GoalForm({ initial, goals, onDone }: { initial?: Goal; goals: Goal[]; onDone: () => void }) {
+function GoalForm({ initial, goals, onDone }: { initial: Goal | undefined; goals: Goal[]; onDone: () => void }) {
   const invalidate = useInvalidateData();
   const [name, setName] = useState(initial?.name ?? ""); const [target, setTarget] = useState(initial?.target == null ? "" : String(initial.target)); const [opening, setOpening] = useState(String(initial?.opening_saved ?? 0)); const [priority, setPriority] = useState<Goal["priority"]>(initial?.priority ?? "Medium"); const [auto, setAuto] = useState(initial?.auto_count ?? false); const [saving, setSaving] = useState(false);
   async function save() {
     const clean = name.trim(); const targetNumber = target === "" ? null : Number(target); const openingNumber = Number(opening);
-    if (!clean) return toast.error("Enter a goal name.");
-    if (goals.some((g) => g.id !== initial?.id && g.name === clean)) return toast.error("That goal name is already used.");
-    if ((targetNumber != null && (!Number.isFinite(targetNumber) || targetNumber < 0)) || !Number.isFinite(openingNumber)) return toast.error("Check the target and opening amount.");
+    if (!clean) { toast.error("Enter a goal name."); return; }
+    if (goals.some((g) => g.id !== initial?.id && g.name === clean)) { toast.error("That goal name is already used."); return; }
+    if ((targetNumber != null && (!Number.isFinite(targetNumber) || targetNumber < 0)) || !Number.isFinite(openingNumber)) { toast.error("Check the target and opening amount."); return; }
     setSaving(true); const row = { name: clean, target: targetNumber, opening_saved: openingNumber, priority, auto_count: auto }; const { error } = initial ? await supabase.from("goals").update(row).eq("id", initial.id) : await supabase.from("goals").insert(row); setSaving(false);
-    if (error) return toast.error(friendlyError(error)); invalidate(); toast.success(initial ? "Goal updated" : "Goal added"); onDone();
+    if (error) { toast.error(friendlyError(error)); return; } invalidate(); toast.success(initial ? "Goal updated" : "Goal added"); onDone();
   }
   return <div className="grid gap-4"><Field label="Name"><Input value={name} onChange={(e) => setName(e.target.value)} maxLength={60} autoFocus /></Field><div className="grid grid-cols-2 gap-3"><Field label="Target"><Input type="number" inputMode="decimal" min="0" step="0.01" value={target} onChange={(e) => setTarget(e.target.value)} placeholder="Optional" /></Field><Field label="Opening saved"><Input type="number" inputMode="decimal" step="0.01" value={opening} onChange={(e) => setOpening(e.target.value)} /></Field></div><Field label="Priority"><Select value={priority} onValueChange={(v) => setPriority(v as Goal["priority"])}><SelectTrigger><SelectValue /></SelectTrigger><SelectContent>{priorities.map((p) => <SelectItem key={p} value={p}>{p}</SelectItem>)}</SelectContent></Select></Field><div className="flex items-center justify-between rounded-2xl bg-muted p-4"><div><Label htmlFor="auto-count">Auto-count completed months</Label><p className="text-xs text-muted-foreground">Counts unused linked savings budgets automatically.</p></div><Switch id="auto-count" checked={auto} onCheckedChange={setAuto} /></div><Button onClick={save} disabled={saving}>{initial ? "Save changes" : "Add goal"}</Button></div>;
 }
