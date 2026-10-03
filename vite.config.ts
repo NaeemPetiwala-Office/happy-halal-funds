@@ -22,7 +22,6 @@ export default defineConfig({
         manifest: false, // served from public/manifest.webmanifest
         devOptions: { enabled: false },
         workbox: {
-          swDest: undefined,
           globPatterns: ["**/*.{js,css,woff2,png,svg,ico,webmanifest}"],
           navigateFallback: null,
           cleanupOutdatedCaches: true,
