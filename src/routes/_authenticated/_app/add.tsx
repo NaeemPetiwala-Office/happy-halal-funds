@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlusCircle } from "lucide-react";
-import { PlaceholderPage } from "@/components/PageHeader";
+import { PageHeader } from "@/components/PageHeader";
+import { TransactionForm } from "@/components/TransactionForm";
 
 export const Route = createFileRoute("/_authenticated/_app/add")({
   head: () => ({
@@ -17,12 +17,12 @@ export const Route = createFileRoute("/_authenticated/_app/add")({
 function Page() {
   return (
     <>
-      <PlaceholderPage
-        eyebrow="Quick entry"
-        title="Add transaction"
-        description="Log spending, income or a transfer in a few taps."
-        icon={<PlusCircle className="size-6" />}
-      />
+      <PageHeader eyebrow="Quick entry" title="Add transaction" />
+      <div className="relative mx-auto -mt-6 max-w-lg px-5">
+        <div className="rounded-3xl border bg-card p-5 shadow-soft">
+          <TransactionForm />
+        </div>
+      </div>
     </>
   );
 }
