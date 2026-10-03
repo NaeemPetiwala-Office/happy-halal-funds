@@ -1,6 +1,6 @@
 export function Disclaimer() {
   return (
-    <p className="rounded-2xl border border-accent/40 bg-accent/10 p-3 text-center text-xs text-muted-foreground">
+    <p className="rounded-2xl border border-accent/40 bg-card p-3 shadow-soft text-center text-xs text-muted-foreground">
       This is a budgeting aid, not religious or financial advice. Please consult a qualified scholar.
     </p>
   );

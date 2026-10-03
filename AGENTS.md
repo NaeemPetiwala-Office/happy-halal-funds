@@ -19,3 +19,5 @@
 - Use logical spacing utilities (`ps-`, `pe-`, `ms-`, `start-`, `end-`) so RTL layouts work.
 - Table reads go through shared query options in `src/lib/data.ts` (keys under `["data", ...]`); after any write call `useInvalidateData()` so every screen refreshes together.
 - Screens get derived numbers via `usePlan()` (src/lib/use-plan.ts), which feeds raw rows into the engine for the globally selected month stored on the profile.
+- "Start a new year" runs in one database function (`start_new_year`) that moves old entries into `archived_entries` (kept as JSON, not counted) — atomic, and archived rows never count toward row caps.
+- Optional planners store their dates and items as JSON in `module_plans` (one row per module) and are visible only when the matching `profiles.modules` flag is on.

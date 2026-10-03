@@ -158,7 +158,7 @@ export function healthChecks(h: HealthInput): HealthCheck[] {
   add("duplicate-names", "Duplicate category names", dups.length > 0, "fix", `Used more than once: ${dups.map((d) => `"${d}"`).join(", ")}.`, "All category names are unique.", "/budget");
 
   const noType = h.categories.filter((c) => !c.type).length;
-  add("no-type", "Categories without a type", noType > 0, "fix", `${plural(noType, "category")} need a type.`, "Every category has a type.", "/budget");
+  add("no-type", "Categories without a type", noType > 0, "fix", `${noType === 1 ? "1 category" : `${noType} categories`} need a type.`, "Every category has a type.", "/budget");
 
   const missingDest = h.categories.filter((c) => c.leftover_mode === "move" && (!c.leftover_category_id || !catIds.has(c.leftover_category_id)));
   add("dest-missing", "Leftover destination missing", missingDest.length > 0, "fix", `Leftovers stay in place for: ${missingDest.map((c) => `"${c.name}"`).join(", ")}.`, "All leftover destinations exist.", "/budget");
@@ -188,7 +188,7 @@ export function healthChecks(h: HealthInput): HealthCheck[] {
   add("goal-no-target", "Goals without a target", noTarget.length > 0, "note", `No target set for: ${noTarget.map((g) => `"${g.name}"`).join(", ")}.`, "Every goal has a target.", "/goals");
 
   const sample = h.categories.filter((c) => c.notes === "Sample data").length;
-  add("sample-data", "Sample data", sample > 0, "note", `${plural(sample, "sample category")} still in your plan. Delete them when you're ready.`, "No sample data left.", "/budget");
+  add("sample-data", "Sample data", sample > 0, "note", `${sample === 1 ? "1 sample category" : `${sample} sample categories`} still in your plan. Delete them when you're ready.`, "No sample data left.", "/budget");
 
   const counts: [string, number, number][] = [
     ["categories", h.categories.length, LIMITS.categories],
