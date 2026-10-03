@@ -111,15 +111,15 @@ export function TransactionForm({
           aria-label="Delete last digit"
           className="col-span-3 flex h-10 items-center justify-center gap-2 rounded-full bg-muted text-sm text-muted-foreground hover:bg-secondary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <Delete className="size-4" /> Delete
+          <Delete className="size-4" aria-hidden="true" /> Delete
         </button>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2">
         <div className="grid gap-1.5">
-          <Label>Category</Label>
+          <Label htmlFor="tx-category">Category</Label>
           <Select value={categoryId} onValueChange={setCategoryId}>
-            <SelectTrigger className="rounded-full">
+            <SelectTrigger id="tx-category" className="rounded-full">
               <SelectValue placeholder={categories.length ? "Choose…" : "Add categories on Budget first"} />
             </SelectTrigger>
             <SelectContent>
@@ -132,9 +132,9 @@ export function TransactionForm({
           </Select>
         </div>
         <div className="grid gap-1.5">
-          <Label>Account</Label>
+          <Label htmlFor="tx-account">Account</Label>
           <Select value={accountId} onValueChange={setAccountId}>
-            <SelectTrigger className="rounded-full">
+            <SelectTrigger id="tx-account" className="rounded-full">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
