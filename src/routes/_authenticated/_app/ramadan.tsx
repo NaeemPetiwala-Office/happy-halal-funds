@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Moon } from "lucide-react";
-import { PlaceholderPage } from "@/components/PageHeader";
+import { PlannerPage } from "@/components/PlannerPage";
 
 export const Route = createFileRoute("/_authenticated/_app/ramadan")({
   head: () => ({
@@ -15,14 +15,5 @@ export const Route = createFileRoute("/_authenticated/_app/ramadan")({
 });
 
 function Page() {
-  return (
-    <>
-      <PlaceholderPage
-        eyebrow="Optional planner"
-        title="Ramadan"
-        description="Plan iftar, Eid and giving for the blessed month."
-        icon={<Moon className="size-6" />}
-      />
-    </>
-  );
+  return <PlannerPage module="ramadan" title="Ramadan" eyebrow="Optional planner" icon={<Moon className="size-6" />} suggestions={["Iftar & suhoor", "Eid clothes", "Eid gifts", "Zakat al-Fitr", "Sadaqah"]} />;
 }
