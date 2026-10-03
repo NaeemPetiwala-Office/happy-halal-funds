@@ -74,6 +74,7 @@ export function TransactionForm({
       setAmount("");
       setNote("");
     } else onDone?.();
+    return undefined;
   }
 
   const symbol = currencySymbol(profile?.currency ?? "USD");
