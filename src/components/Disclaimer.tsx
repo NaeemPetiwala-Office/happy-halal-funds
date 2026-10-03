@@ -6,7 +6,7 @@ export function Disclaimer() {
   );
 }
 
-export function Stat({ label, value, strong, hint }: { label: string; value: string; strong?: boolean; hint?: string }) {
+export function Stat({ label, value, strong, hint }: { label: string; value: string; strong?: boolean | undefined; hint?: string | undefined }) {
   return (
     <div className={`rounded-2xl p-3 ${strong ? "bg-secondary text-secondary-foreground" : "bg-muted"}`}>
       <p className="text-xs text-muted-foreground">{label}</p>
