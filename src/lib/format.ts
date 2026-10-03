@@ -1,8 +1,11 @@
 import { currencySymbol } from "./currencies";
+import { currentLocale } from "./i18n";
+
+const loc = () => (currentLocale() === "ar" ? "ar-u-nu-latn" : undefined);
 
 export function formatMoney(n: number, currency: string): string {
   const sign = n < 0 ? "-" : "";
-  const abs = Math.abs(Math.round(n * 100) / 100).toLocaleString(undefined, {
+  const abs = Math.abs(Math.round(n * 100) / 100).toLocaleString(loc(), {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   });
@@ -25,10 +28,10 @@ export function planMonths(planStart: string): string[] {
 
 export function monthLabel(ym: string): string {
   const [y, m] = ym.split("-").map(Number) as [number, number, number];
-  return new Date(y, m - 1, 1).toLocaleDateString(undefined, { month: "long", year: "numeric" });
+  return new Date(y, m - 1, 1).toLocaleDateString(loc(), { month: "long", year: "numeric" });
 }
 
 export function dateLabel(iso: string): string {
   const [y, m, d] = iso.split("-").map(Number) as [number, number, number];
-  return new Date(y, m - 1, d).toLocaleDateString(undefined, { day: "numeric", month: "short", year: "numeric" });
+  return new Date(y, m - 1, d).toLocaleDateString(loc(), { day: "numeric", month: "short", year: "numeric" });
 }
