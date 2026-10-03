@@ -50,7 +50,7 @@ function Onboarding() {
       })
       .eq("user_id", user.id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await qc.invalidateQueries({ queryKey: profileQuery.queryKey });
     navigate({ to: "/dashboard", replace: true });
   }

@@ -44,7 +44,7 @@ function SettingsPage() {
       .update({ name: name.trim() || null, currency, plan_start: monthInputToDate(month) })
       .eq("user_id", profile.user_id);
     setBusy(false);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     await qc.invalidateQueries({ queryKey: profileQuery.queryKey });
     toast.success("Settings saved");
   }
