@@ -246,6 +246,8 @@ export function monthSummary(
 
 export interface GoalTotal {
   goal: EGoal;
+  savedFromLog: number;
+  autoCounted: number;
   saved: number;
   remaining: number | null;
   progress: number | null; // 0..100
@@ -274,7 +276,127 @@ export function goalTotals(plan: Plan, goals: EGoal[], transactions: ETransactio
       const t = y * 12 + (m - 1) + monthsToGo;
       estimatedCompletion = `${Math.floor(t / 12)}-${String((t % 12) + 1).padStart(2, "0")}`;
     }
-    return { goal: g, saved, remaining, progress, monthlyPlan, monthsToGo, estimatedCompletion };
+    return { goal: g, savedFromLog: txSum, autoCounted: autoSum, saved, remaining, progress, monthlyPlan, monthsToGo, estimatedCompletion };
+  });
+}
+
+/* ---------- accounts ---------- */
+
+export interface EAccount {
+  id: string;
+  name: string;
+  opening_balance: number;
+  minimum_balance: number;
+  actual_balance: number | null;
+}
+export interface EAccountEntry { account_id: string | null; amount: number }
+export interface ETransfer { from_account_id: string | null; to_account_id: string | null; amount: number }
+export interface AccountTotal {
+  account: EAccount;
+  calculated: number;
+  balance: number;
+  difference: number | null;
+  usable: number;
+}
+
+export function accountTotals(
+  accounts: EAccount[],
+  incomeEntries: EAccountEntry[],
+  transactions: EAccountEntry[],
+  transfers: ETransfer[],
+): AccountTotal[] {
+  return accounts.map((account) => {
+    const income = incomeEntries.filter((x) => x.account_id === account.id).reduce((s, x) => s + Number(x.amount), 0);
+    const spending = transactions.filter((x) => x.account_id === account.id).reduce((s, x) => s + Number(x.amount), 0);
+    const transfersIn = transfers.filter((x) => x.to_account_id === account.id).reduce((s, x) => s + Number(x.amount), 0);
+    const transfersOut = transfers.filter((x) => x.from_account_id === account.id).reduce((s, x) => s + Number(x.amount), 0);
+    const calculated = Number(account.opening_balance) + income - spending + transfersIn - transfersOut;
+    const actual = account.actual_balance == null ? null : Number(account.actual_balance);
+    const balance = actual ?? calculated;
+    return {
+      account,
+      calculated,
+      balance,
+      difference: actual == null ? null : actual - calculated,
+      usable: Math.max(balance - Number(account.minimum_balance), 0),
+    };
+  });
+}
+
+/* ---------- recurring payments ---------- */
+
+export type RecurringFrequency = "Monthly" | "Quarterly" | "Half-yearly" | "Yearly" | "One-time";
+export interface ERecurringItem {
+  id: string;
+  name: string;
+  amount: number;
+  frequency: RecurringFrequency;
+  first_due_date: string;
+  category_id: string | null;
+  active: boolean;
+}
+export type RecurringStatus = "Inactive" | "Due today" | "Due soon" | "Upcoming" | "Completed";
+export interface RecurringTotal {
+  item: ERecurringItem;
+  nextDue: string | null;
+  daysUntil: number | null;
+  status: RecurringStatus;
+  monthlySetAside: number;
+  dueInSelectedMonth: boolean;
+}
+
+export function recurringStepMonths(frequency: RecurringFrequency): number {
+  return { Monthly: 1, Quarterly: 3, "Half-yearly": 6, Yearly: 12, "One-time": 0 }[frequency];
+}
+
+function dateParts(iso: string): [number, number, number] {
+  return [Number(iso.slice(0, 4)), Number(iso.slice(5, 7)), Number(iso.slice(8, 10))];
+}
+
+function daysInMonth(year: number, month: number): number {
+  return new Date(Date.UTC(year, month, 0)).getUTCDate();
+}
+
+function addMonthsClamped(iso: string, months: number): string {
+  const [year, month, day] = dateParts(iso);
+  const absolute = year * 12 + month - 1 + months;
+  const nextYear = Math.floor(absolute / 12);
+  const nextMonth = (absolute % 12) + 1;
+  const nextDay = Math.min(day, daysInMonth(nextYear, nextMonth));
+  return `${nextYear}-${String(nextMonth).padStart(2, "0")}-${String(nextDay).padStart(2, "0")}`;
+}
+
+export function nextRecurringDue(item: ERecurringItem, today: string): string | null {
+  if (!item.active) return null;
+  if (item.frequency === "One-time") return item.first_due_date >= today ? item.first_due_date : null;
+  if (item.first_due_date >= today) return item.first_due_date;
+  const step = recurringStepMonths(item.frequency);
+  const [fy, fm] = ym(item.first_due_date);
+  const [ty, tm] = ym(today);
+  let jumps = Math.max(0, Math.floor(((ty - fy) * 12 + tm - fm) / step));
+  let candidate = addMonthsClamped(item.first_due_date, jumps * step);
+  while (candidate < today) {
+    jumps += 1;
+    candidate = addMonthsClamped(item.first_due_date, jumps * step);
+  }
+  return candidate;
+}
+
+export function recurringDueInMonth(item: ERecurringItem, selectedMonth: string): boolean {
+  if (!item.active || selectedMonth < item.first_due_date.slice(0, 7)) return false;
+  if (item.frequency === "One-time") return item.first_due_date.startsWith(selectedMonth);
+  const offset = monthIndex(`${item.first_due_date.slice(0, 7)}-01`, `${selectedMonth}-01`);
+  return offset >= 0 && offset % recurringStepMonths(item.frequency) === 0;
+}
+
+export function recurringTotals(items: ERecurringItem[], today: string, selectedMonth: string): RecurringTotal[] {
+  return items.map((item) => {
+    const nextDue = nextRecurringDue(item, today);
+    const daysUntil = nextDue == null ? null : Math.round((Date.parse(`${nextDue}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) / 86400000);
+    const step = recurringStepMonths(item.frequency);
+    const monthlySetAside = item.active ? (step > 0 ? Number(item.amount) / step : nextDue ? Number(item.amount) : 0) : 0;
+    const status: RecurringStatus = !item.active ? "Inactive" : nextDue == null ? "Completed" : daysUntil === 0 ? "Due today" : (daysUntil ?? 8) <= 7 ? "Due soon" : "Upcoming";
+    return { item, nextDue, daysUntil, status, monthlySetAside, dueInSelectedMonth: recurringDueInMonth(item, selectedMonth) };
   });
 }
 
