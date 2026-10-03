@@ -10,33 +10,274 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AuthenticatedAppRouteRouteImport } from './routes/_authenticated/_app/route'
+import { Route as AuthenticatedOnboardingRouteImport } from './routes/_authenticated/onboarding'
+import { Route as AuthenticatedAppAccountsRouteImport } from './routes/_authenticated/_app/accounts'
+import { Route as AuthenticatedAppAddRouteImport } from './routes/_authenticated/_app/add'
+import { Route as AuthenticatedAppBudgetRouteImport } from './routes/_authenticated/_app/budget'
+import { Route as AuthenticatedAppDashboardRouteImport } from './routes/_authenticated/_app/dashboard'
+import { Route as AuthenticatedAppGoalsRouteImport } from './routes/_authenticated/_app/goals'
+import { Route as AuthenticatedAppHajjRouteImport } from './routes/_authenticated/_app/hajj'
+import { Route as AuthenticatedAppHealthRouteImport } from './routes/_authenticated/_app/health'
+import { Route as AuthenticatedAppIncomeRouteImport } from './routes/_authenticated/_app/income'
+import { Route as AuthenticatedAppInterestRouteImport } from './routes/_authenticated/_app/interest'
+import { Route as AuthenticatedAppLogRouteImport } from './routes/_authenticated/_app/log'
+import { Route as AuthenticatedAppMoreRouteImport } from './routes/_authenticated/_app/more'
+import { Route as AuthenticatedAppQurbaniRouteImport } from './routes/_authenticated/_app/qurbani'
+import { Route as AuthenticatedAppRamadanRouteImport } from './routes/_authenticated/_app/ramadan'
+import { Route as AuthenticatedAppRecurringRouteImport } from './routes/_authenticated/_app/recurring'
+import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/_app/settings'
+import { Route as AuthenticatedAppZakatRouteImport } from './routes/_authenticated/_app/zakat'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedAppRouteRoute = AuthenticatedAppRouteRouteImport.update({
+  id: '/_app',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedOnboardingRoute = AuthenticatedOnboardingRouteImport.update({
+  id: '/onboarding',
+  path: '/onboarding',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAppAccountsRoute =
+  AuthenticatedAppAccountsRouteImport.update({
+    id: '/accounts',
+    path: '/accounts',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppAddRoute = AuthenticatedAppAddRouteImport.update({
+  id: '/add',
+  path: '/add',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppBudgetRoute = AuthenticatedAppBudgetRouteImport.update({
+  id: '/budget',
+  path: '/budget',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppDashboardRoute =
+  AuthenticatedAppDashboardRouteImport.update({
+    id: '/dashboard',
+    path: '/dashboard',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppGoalsRoute = AuthenticatedAppGoalsRouteImport.update({
+  id: '/goals',
+  path: '/goals',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppHajjRoute = AuthenticatedAppHajjRouteImport.update({
+  id: '/hajj',
+  path: '/hajj',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppHealthRoute = AuthenticatedAppHealthRouteImport.update({
+  id: '/health',
+  path: '/health',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppIncomeRoute = AuthenticatedAppIncomeRouteImport.update({
+  id: '/income',
+  path: '/income',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppInterestRoute =
+  AuthenticatedAppInterestRouteImport.update({
+    id: '/interest',
+    path: '/interest',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppLogRoute = AuthenticatedAppLogRouteImport.update({
+  id: '/log',
+  path: '/log',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppMoreRoute = AuthenticatedAppMoreRouteImport.update({
+  id: '/more',
+  path: '/more',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppQurbaniRoute = AuthenticatedAppQurbaniRouteImport.update({
+  id: '/qurbani',
+  path: '/qurbani',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppRamadanRoute = AuthenticatedAppRamadanRouteImport.update({
+  id: '/ramadan',
+  path: '/ramadan',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
+const AuthenticatedAppRecurringRoute =
+  AuthenticatedAppRecurringRouteImport.update({
+    id: '/recurring',
+    path: '/recurring',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppSettingsRoute =
+  AuthenticatedAppSettingsRouteImport.update({
+    id: '/settings',
+    path: '/settings',
+    getParentRoute: () => AuthenticatedAppRouteRoute,
+  } as any)
+const AuthenticatedAppZakatRoute = AuthenticatedAppZakatRouteImport.update({
+  id: '/zakat',
+  path: '/zakat',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/accounts': typeof AuthenticatedAppAccountsRoute
+  '/add': typeof AuthenticatedAppAddRoute
+  '/budget': typeof AuthenticatedAppBudgetRoute
+  '/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/goals': typeof AuthenticatedAppGoalsRoute
+  '/hajj': typeof AuthenticatedAppHajjRoute
+  '/health': typeof AuthenticatedAppHealthRoute
+  '/income': typeof AuthenticatedAppIncomeRoute
+  '/interest': typeof AuthenticatedAppInterestRoute
+  '/log': typeof AuthenticatedAppLogRoute
+  '/more': typeof AuthenticatedAppMoreRoute
+  '/qurbani': typeof AuthenticatedAppQurbaniRoute
+  '/ramadan': typeof AuthenticatedAppRamadanRoute
+  '/recurring': typeof AuthenticatedAppRecurringRoute
+  '/settings': typeof AuthenticatedAppSettingsRoute
+  '/zakat': typeof AuthenticatedAppZakatRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/onboarding': typeof AuthenticatedOnboardingRoute
+  '/accounts': typeof AuthenticatedAppAccountsRoute
+  '/add': typeof AuthenticatedAppAddRoute
+  '/budget': typeof AuthenticatedAppBudgetRoute
+  '/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/goals': typeof AuthenticatedAppGoalsRoute
+  '/hajj': typeof AuthenticatedAppHajjRoute
+  '/health': typeof AuthenticatedAppHealthRoute
+  '/income': typeof AuthenticatedAppIncomeRoute
+  '/interest': typeof AuthenticatedAppInterestRoute
+  '/log': typeof AuthenticatedAppLogRoute
+  '/more': typeof AuthenticatedAppMoreRoute
+  '/qurbani': typeof AuthenticatedAppQurbaniRoute
+  '/ramadan': typeof AuthenticatedAppRamadanRoute
+  '/recurring': typeof AuthenticatedAppRecurringRoute
+  '/settings': typeof AuthenticatedAppSettingsRoute
+  '/zakat': typeof AuthenticatedAppZakatRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/_authenticated/_app': typeof AuthenticatedAppRouteRouteWithChildren
+  '/_authenticated/onboarding': typeof AuthenticatedOnboardingRoute
+  '/_authenticated/_app/accounts': typeof AuthenticatedAppAccountsRoute
+  '/_authenticated/_app/add': typeof AuthenticatedAppAddRoute
+  '/_authenticated/_app/budget': typeof AuthenticatedAppBudgetRoute
+  '/_authenticated/_app/dashboard': typeof AuthenticatedAppDashboardRoute
+  '/_authenticated/_app/goals': typeof AuthenticatedAppGoalsRoute
+  '/_authenticated/_app/hajj': typeof AuthenticatedAppHajjRoute
+  '/_authenticated/_app/health': typeof AuthenticatedAppHealthRoute
+  '/_authenticated/_app/income': typeof AuthenticatedAppIncomeRoute
+  '/_authenticated/_app/interest': typeof AuthenticatedAppInterestRoute
+  '/_authenticated/_app/log': typeof AuthenticatedAppLogRoute
+  '/_authenticated/_app/more': typeof AuthenticatedAppMoreRoute
+  '/_authenticated/_app/qurbani': typeof AuthenticatedAppQurbaniRoute
+  '/_authenticated/_app/ramadan': typeof AuthenticatedAppRamadanRoute
+  '/_authenticated/_app/recurring': typeof AuthenticatedAppRecurringRoute
+  '/_authenticated/_app/settings': typeof AuthenticatedAppSettingsRoute
+  '/_authenticated/_app/zakat': typeof AuthenticatedAppZakatRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/accounts'
+    | '/add'
+    | '/budget'
+    | '/dashboard'
+    | '/goals'
+    | '/hajj'
+    | '/health'
+    | '/income'
+    | '/interest'
+    | '/log'
+    | '/more'
+    | '/qurbani'
+    | '/ramadan'
+    | '/recurring'
+    | '/settings'
+    | '/zakat'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/onboarding'
+    | '/accounts'
+    | '/add'
+    | '/budget'
+    | '/dashboard'
+    | '/goals'
+    | '/hajj'
+    | '/health'
+    | '/income'
+    | '/interest'
+    | '/log'
+    | '/more'
+    | '/qurbani'
+    | '/ramadan'
+    | '/recurring'
+    | '/settings'
+    | '/zakat'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/_authenticated/_app'
+    | '/_authenticated/onboarding'
+    | '/_authenticated/_app/accounts'
+    | '/_authenticated/_app/add'
+    | '/_authenticated/_app/budget'
+    | '/_authenticated/_app/dashboard'
+    | '/_authenticated/_app/goals'
+    | '/_authenticated/_app/hajj'
+    | '/_authenticated/_app/health'
+    | '/_authenticated/_app/income'
+    | '/_authenticated/_app/interest'
+    | '/_authenticated/_app/log'
+    | '/_authenticated/_app/more'
+    | '/_authenticated/_app/qurbani'
+    | '/_authenticated/_app/ramadan'
+    | '/_authenticated/_app/recurring'
+    | '/_authenticated/_app/settings'
+    | '/_authenticated/_app/zakat'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +289,209 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/_app': {
+      id: '/_authenticated/_app'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedAppRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/onboarding': {
+      id: '/_authenticated/onboarding'
+      path: '/onboarding'
+      fullPath: '/onboarding'
+      preLoaderRoute: typeof AuthenticatedOnboardingRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/_app/accounts': {
+      id: '/_authenticated/_app/accounts'
+      path: '/accounts'
+      fullPath: '/accounts'
+      preLoaderRoute: typeof AuthenticatedAppAccountsRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/add': {
+      id: '/_authenticated/_app/add'
+      path: '/add'
+      fullPath: '/add'
+      preLoaderRoute: typeof AuthenticatedAppAddRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/budget': {
+      id: '/_authenticated/_app/budget'
+      path: '/budget'
+      fullPath: '/budget'
+      preLoaderRoute: typeof AuthenticatedAppBudgetRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/dashboard': {
+      id: '/_authenticated/_app/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedAppDashboardRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/goals': {
+      id: '/_authenticated/_app/goals'
+      path: '/goals'
+      fullPath: '/goals'
+      preLoaderRoute: typeof AuthenticatedAppGoalsRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/hajj': {
+      id: '/_authenticated/_app/hajj'
+      path: '/hajj'
+      fullPath: '/hajj'
+      preLoaderRoute: typeof AuthenticatedAppHajjRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/health': {
+      id: '/_authenticated/_app/health'
+      path: '/health'
+      fullPath: '/health'
+      preLoaderRoute: typeof AuthenticatedAppHealthRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/income': {
+      id: '/_authenticated/_app/income'
+      path: '/income'
+      fullPath: '/income'
+      preLoaderRoute: typeof AuthenticatedAppIncomeRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/interest': {
+      id: '/_authenticated/_app/interest'
+      path: '/interest'
+      fullPath: '/interest'
+      preLoaderRoute: typeof AuthenticatedAppInterestRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/log': {
+      id: '/_authenticated/_app/log'
+      path: '/log'
+      fullPath: '/log'
+      preLoaderRoute: typeof AuthenticatedAppLogRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/more': {
+      id: '/_authenticated/_app/more'
+      path: '/more'
+      fullPath: '/more'
+      preLoaderRoute: typeof AuthenticatedAppMoreRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/qurbani': {
+      id: '/_authenticated/_app/qurbani'
+      path: '/qurbani'
+      fullPath: '/qurbani'
+      preLoaderRoute: typeof AuthenticatedAppQurbaniRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/ramadan': {
+      id: '/_authenticated/_app/ramadan'
+      path: '/ramadan'
+      fullPath: '/ramadan'
+      preLoaderRoute: typeof AuthenticatedAppRamadanRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/recurring': {
+      id: '/_authenticated/_app/recurring'
+      path: '/recurring'
+      fullPath: '/recurring'
+      preLoaderRoute: typeof AuthenticatedAppRecurringRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/settings': {
+      id: '/_authenticated/_app/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
+    '/_authenticated/_app/zakat': {
+      id: '/_authenticated/_app/zakat'
+      path: '/zakat'
+      fullPath: '/zakat'
+      preLoaderRoute: typeof AuthenticatedAppZakatRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
   }
 }
 
+interface AuthenticatedAppRouteRouteChildren {
+  AuthenticatedAppAccountsRoute: typeof AuthenticatedAppAccountsRoute
+  AuthenticatedAppAddRoute: typeof AuthenticatedAppAddRoute
+  AuthenticatedAppBudgetRoute: typeof AuthenticatedAppBudgetRoute
+  AuthenticatedAppDashboardRoute: typeof AuthenticatedAppDashboardRoute
+  AuthenticatedAppGoalsRoute: typeof AuthenticatedAppGoalsRoute
+  AuthenticatedAppHajjRoute: typeof AuthenticatedAppHajjRoute
+  AuthenticatedAppHealthRoute: typeof AuthenticatedAppHealthRoute
+  AuthenticatedAppIncomeRoute: typeof AuthenticatedAppIncomeRoute
+  AuthenticatedAppInterestRoute: typeof AuthenticatedAppInterestRoute
+  AuthenticatedAppLogRoute: typeof AuthenticatedAppLogRoute
+  AuthenticatedAppMoreRoute: typeof AuthenticatedAppMoreRoute
+  AuthenticatedAppQurbaniRoute: typeof AuthenticatedAppQurbaniRoute
+  AuthenticatedAppRamadanRoute: typeof AuthenticatedAppRamadanRoute
+  AuthenticatedAppRecurringRoute: typeof AuthenticatedAppRecurringRoute
+  AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
+  AuthenticatedAppZakatRoute: typeof AuthenticatedAppZakatRoute
+}
+
+const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
+  AuthenticatedAppAccountsRoute: AuthenticatedAppAccountsRoute,
+  AuthenticatedAppAddRoute: AuthenticatedAppAddRoute,
+  AuthenticatedAppBudgetRoute: AuthenticatedAppBudgetRoute,
+  AuthenticatedAppDashboardRoute: AuthenticatedAppDashboardRoute,
+  AuthenticatedAppGoalsRoute: AuthenticatedAppGoalsRoute,
+  AuthenticatedAppHajjRoute: AuthenticatedAppHajjRoute,
+  AuthenticatedAppHealthRoute: AuthenticatedAppHealthRoute,
+  AuthenticatedAppIncomeRoute: AuthenticatedAppIncomeRoute,
+  AuthenticatedAppInterestRoute: AuthenticatedAppInterestRoute,
+  AuthenticatedAppLogRoute: AuthenticatedAppLogRoute,
+  AuthenticatedAppMoreRoute: AuthenticatedAppMoreRoute,
+  AuthenticatedAppQurbaniRoute: AuthenticatedAppQurbaniRoute,
+  AuthenticatedAppRamadanRoute: AuthenticatedAppRamadanRoute,
+  AuthenticatedAppRecurringRoute: AuthenticatedAppRecurringRoute,
+  AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
+  AuthenticatedAppZakatRoute: AuthenticatedAppZakatRoute,
+}
+
+const AuthenticatedAppRouteRouteWithChildren =
+  AuthenticatedAppRouteRoute._addFileChildren(
+    AuthenticatedAppRouteRouteChildren,
+  )
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAppRouteRoute: typeof AuthenticatedAppRouteRouteWithChildren
+  AuthenticatedOnboardingRoute: typeof AuthenticatedOnboardingRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAppRouteRoute: AuthenticatedAppRouteRouteWithChildren,
+  AuthenticatedOnboardingRoute: AuthenticatedOnboardingRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
