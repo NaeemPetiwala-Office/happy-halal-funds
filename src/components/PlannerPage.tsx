@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState, type ReactNode } from "react";
 import { Plus, Trash2 } from "lucide-react";
@@ -66,7 +67,7 @@ export function PlannerPage({ module, title, eyebrow, icon, suggestions, footer 
     <>
       <PageHeader eyebrow={eyebrow} title={title} actions={<Button variant="secondary" size="sm" onClick={save} disabled={!dirty}>Save</Button>} />
       <div className="relative mx-auto -mt-6 flex max-w-5xl flex-col gap-5 px-5 pb-24 md:px-10">
-        {isLoading ? <p className="text-center text-muted-foreground">Loading…</p> : <>
+        {isLoading ? <PageSkeleton /> : <>
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             <Stat label="Planned" value={fm(t.planned)} />
             <Stat label="Spent" value={fm(t.spent)} />

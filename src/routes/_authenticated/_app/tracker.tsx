@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { PageHeader } from "@/components/PageHeader";
 import { MonthSwitcher } from "@/components/MonthSwitcher";
 import { StatusBadge } from "@/components/StatusBadge";
@@ -24,7 +25,7 @@ function Page() {
     return (
       <>
         <PageHeader eyebrow="Track" title="Tracker" />
-        <p className="p-10 text-center text-sm text-muted-foreground">Loading…</p>
+        <PageSkeleton />
       </>
     );
   }

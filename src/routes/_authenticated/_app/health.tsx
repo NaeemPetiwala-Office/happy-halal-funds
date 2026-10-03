@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { PageSkeleton } from "@/components/EmptyState";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
@@ -40,7 +41,7 @@ function Page() {
   const ig = useQuery(interestGivenQuery).data ?? [];
   const zs = useQuery(zakatSettingsQuery).data;
 
-  if (p.loading) return <><PageHeader eyebrow="Keep things right" title="Health check" /><p className="p-10 text-center text-muted-foreground">Checking…</p></>;
+  if (p.loading) return <><PageHeader eyebrow="Keep things right" title="Health check" /><PageSkeleton /></>;
 
   const checks = healthChecks({
     today: todayISO(),
