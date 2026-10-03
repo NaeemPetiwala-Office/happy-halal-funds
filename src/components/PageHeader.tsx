@@ -11,7 +11,7 @@ export function PageHeader({
 }) {
   return (
     <header className="bg-header-gradient rounded-b-[2.5rem] px-5 pb-10 pt-8 text-primary-foreground shadow-soft md:mx-6 md:mt-6 md:rounded-[2.5rem] md:px-10">
-      <div className="mx-auto flex max-w-5xl items-start justify-between gap-4">
+      <div className="mx-auto flex max-w-5xl flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-[0.18em] opacity-75">{eyebrow}</p>
           <h1 className="mt-2 text-3xl font-bold md:text-4xl">{title}</h1>

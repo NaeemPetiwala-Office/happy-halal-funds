@@ -29,6 +29,7 @@ import { Route as AuthenticatedAppQurbaniRouteImport } from './routes/_authentic
 import { Route as AuthenticatedAppRamadanRouteImport } from './routes/_authenticated/_app/ramadan'
 import { Route as AuthenticatedAppRecurringRouteImport } from './routes/_authenticated/_app/recurring'
 import { Route as AuthenticatedAppSettingsRouteImport } from './routes/_authenticated/_app/settings'
+import { Route as AuthenticatedAppTrackerRouteImport } from './routes/_authenticated/_app/tracker'
 import { Route as AuthenticatedAppZakatRouteImport } from './routes/_authenticated/_app/zakat'
 
 const IndexRoute = IndexRouteImport.update({
@@ -134,6 +135,11 @@ const AuthenticatedAppSettingsRoute =
     path: '/settings',
     getParentRoute: () => AuthenticatedAppRouteRoute,
   } as any)
+const AuthenticatedAppTrackerRoute = AuthenticatedAppTrackerRouteImport.update({
+  id: '/tracker',
+  path: '/tracker',
+  getParentRoute: () => AuthenticatedAppRouteRoute,
+} as any)
 const AuthenticatedAppZakatRoute = AuthenticatedAppZakatRouteImport.update({
   id: '/zakat',
   path: '/zakat',
@@ -159,6 +165,7 @@ export interface FileRoutesByFullPath {
   '/ramadan': typeof AuthenticatedAppRamadanRoute
   '/recurring': typeof AuthenticatedAppRecurringRoute
   '/settings': typeof AuthenticatedAppSettingsRoute
+  '/tracker': typeof AuthenticatedAppTrackerRoute
   '/zakat': typeof AuthenticatedAppZakatRoute
 }
 export interface FileRoutesByTo {
@@ -180,6 +187,7 @@ export interface FileRoutesByTo {
   '/ramadan': typeof AuthenticatedAppRamadanRoute
   '/recurring': typeof AuthenticatedAppRecurringRoute
   '/settings': typeof AuthenticatedAppSettingsRoute
+  '/tracker': typeof AuthenticatedAppTrackerRoute
   '/zakat': typeof AuthenticatedAppZakatRoute
 }
 export interface FileRoutesById {
@@ -204,6 +212,7 @@ export interface FileRoutesById {
   '/_authenticated/_app/ramadan': typeof AuthenticatedAppRamadanRoute
   '/_authenticated/_app/recurring': typeof AuthenticatedAppRecurringRoute
   '/_authenticated/_app/settings': typeof AuthenticatedAppSettingsRoute
+  '/_authenticated/_app/tracker': typeof AuthenticatedAppTrackerRoute
   '/_authenticated/_app/zakat': typeof AuthenticatedAppZakatRoute
 }
 export interface FileRouteTypes {
@@ -227,6 +236,7 @@ export interface FileRouteTypes {
     | '/ramadan'
     | '/recurring'
     | '/settings'
+    | '/tracker'
     | '/zakat'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -248,6 +258,7 @@ export interface FileRouteTypes {
     | '/ramadan'
     | '/recurring'
     | '/settings'
+    | '/tracker'
     | '/zakat'
   id:
     | '__root__'
@@ -271,6 +282,7 @@ export interface FileRouteTypes {
     | '/_authenticated/_app/ramadan'
     | '/_authenticated/_app/recurring'
     | '/_authenticated/_app/settings'
+    | '/_authenticated/_app/tracker'
     | '/_authenticated/_app/zakat'
   fileRoutesById: FileRoutesById
 }
@@ -422,6 +434,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAppSettingsRouteImport
       parentRoute: typeof AuthenticatedAppRouteRoute
     }
+    '/_authenticated/_app/tracker': {
+      id: '/_authenticated/_app/tracker'
+      path: '/tracker'
+      fullPath: '/tracker'
+      preLoaderRoute: typeof AuthenticatedAppTrackerRouteImport
+      parentRoute: typeof AuthenticatedAppRouteRoute
+    }
     '/_authenticated/_app/zakat': {
       id: '/_authenticated/_app/zakat'
       path: '/zakat'
@@ -448,6 +467,7 @@ interface AuthenticatedAppRouteRouteChildren {
   AuthenticatedAppRamadanRoute: typeof AuthenticatedAppRamadanRoute
   AuthenticatedAppRecurringRoute: typeof AuthenticatedAppRecurringRoute
   AuthenticatedAppSettingsRoute: typeof AuthenticatedAppSettingsRoute
+  AuthenticatedAppTrackerRoute: typeof AuthenticatedAppTrackerRoute
   AuthenticatedAppZakatRoute: typeof AuthenticatedAppZakatRoute
 }
 
@@ -467,6 +487,7 @@ const AuthenticatedAppRouteRouteChildren: AuthenticatedAppRouteRouteChildren = {
   AuthenticatedAppRamadanRoute: AuthenticatedAppRamadanRoute,
   AuthenticatedAppRecurringRoute: AuthenticatedAppRecurringRoute,
   AuthenticatedAppSettingsRoute: AuthenticatedAppSettingsRoute,
+  AuthenticatedAppTrackerRoute: AuthenticatedAppTrackerRoute,
   AuthenticatedAppZakatRoute: AuthenticatedAppZakatRoute,
 }
 

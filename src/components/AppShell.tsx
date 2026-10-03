@@ -15,6 +15,7 @@ import {
   Scale,
   HeartPulse,
   Settings,
+  Gauge,
 } from "lucide-react";
 
 export const PRIMARY_NAV = [
@@ -26,6 +27,7 @@ export const PRIMARY_NAV = [
 ] as const;
 
 export const SECONDARY_NAV = [
+  { to: "/tracker", label: "Tracker", icon: Gauge },
   { to: "/income", label: "Income", icon: Wallet },
   { to: "/goals", label: "Goals", icon: Target },
   { to: "/accounts", label: "Accounts", icon: Landmark },

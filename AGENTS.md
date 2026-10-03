@@ -18,3 +18,4 @@
 - Theme is a `dark` class on `<html>` persisted in localStorage and applied by an inline head script to avoid a flash.
 - Use logical spacing utilities (`ps-`, `pe-`, `ms-`, `start-`, `end-`) so RTL layouts work.
 - Table reads go through shared query options in `src/lib/data.ts` (keys under `["data", ...]`); after any write call `useInvalidateData()` so every screen refreshes together.
+- Screens get derived numbers via `usePlan()` (src/lib/use-plan.ts), which feeds raw rows into the engine for the globally selected month stored on the profile.
