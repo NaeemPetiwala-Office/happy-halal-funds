@@ -54,6 +54,7 @@ function SettingsPage() {
   async function signOut() {
     await qc.cancelQueries();
     qc.clear();
+    try { localStorage.removeItem("hbp-cache"); } catch { /* ignore */ }
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
   }
