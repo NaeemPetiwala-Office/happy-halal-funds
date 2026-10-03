@@ -26,7 +26,7 @@ export function MonthSwitcher({ months, k }: { months: string[]; k: number }) {
       <button type="button" className="glass-btn" aria-label="Previous month" disabled={k <= 0} onClick={() => go(k - 1)}>
         <ChevronLeft className="size-5 rtl:rotate-180" />
       </button>
-      <Select value={months[k]} onValueChange={(v) => go(months.indexOf(v))}>
+      <Select value={months[k] ?? ""} onValueChange={(v) => go(months.indexOf(v))}>
         <SelectTrigger aria-label="Selected month" className="h-10 w-44 rounded-full border-0 bg-card text-card-foreground">
           <SelectValue />
         </SelectTrigger>
