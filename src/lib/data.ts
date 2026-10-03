@@ -85,3 +85,33 @@ export function friendlyError(e: unknown): string {
   if (/check constraint/i.test(msg)) return "That value isn't allowed. Please check it and try again.";
   return msg;
 }
+
+export type ZakatSettings = Tables<"zakat_settings">;
+export type ZakatLine = Tables<"zakat_lines">;
+export type InterestReceived = Tables<"interest_received">;
+export type InterestGiven = Tables<"interest_given">;
+export type ModulePlan = Tables<"module_plans">;
+
+export const zakatSettingsQuery = queryOptions({
+  queryKey: ["data", "zakat_settings"],
+  queryFn: async () => {
+    const { data, error } = await supabase.from("zakat_settings").select("*").maybeSingle();
+    if (error) throw error;
+    return data;
+  },
+});
+
+function simpleQuery<T extends "zakat_lines" | "interest_received" | "interest_given" | "module_plans">(table: T, order: string) {
+  return queryOptions({
+    queryKey: ["data", table],
+    queryFn: async () => {
+      const { data, error } = await supabase.from(table).select("*").order(order, { ascending: order !== "date" });
+      if (error) throw error;
+      return data as unknown as Tables<T>[];
+    },
+  });
+}
+export const zakatLinesQuery = simpleQuery("zakat_lines", "created_at");
+export const interestReceivedQuery = simpleQuery("interest_received", "date");
+export const interestGivenQuery = simpleQuery("interest_given", "date");
+export const modulePlansQuery = simpleQuery("module_plans", "updated_at");
