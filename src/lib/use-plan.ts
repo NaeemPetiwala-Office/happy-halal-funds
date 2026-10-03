@@ -2,7 +2,7 @@ import { useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { profileQuery } from "./profile";
 import { categoriesQuery, goalsQuery, incomeEntriesQuery, incomeSourcesQuery, transactionsQuery } from "./data";
-import { computePlan, goalTotals, monthIndex, monthSummary, PLAN_MONTHS } from "./engine";
+import { computePlan, goalTotals, monthSummary, resolveSelectedMonth } from "./engine";
 import { todayISO } from "./format";
 
 /** Loads raw rows and derives the whole plan for the globally selected month. */
@@ -31,9 +31,7 @@ export function usePlan() {
       transactions: txs.data ?? [],
       goals: normGoals,
     });
-    const rawK = monthIndex(p.plan_start, p.selected_month);
-    const monthValid = rawK >= 0 && rawK < PLAN_MONTHS;
-    const k = Math.min(Math.max(rawK, 0), PLAN_MONTHS - 1);
+    const { k, valid: monthValid } = resolveSelectedMonth(p.plan_start, p.selected_month);
     const plannedIncome = (sources.data ?? []).reduce((s, x) => s + Number(x.monthly_amount), 0);
     const incomeEntries = income.data ?? [];
     return {
