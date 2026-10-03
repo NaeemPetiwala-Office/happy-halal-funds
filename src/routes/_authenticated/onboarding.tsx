@@ -70,7 +70,7 @@ function Onboarding() {
           </div>
         </div>
       </div>
-      <div className="mx-auto -mt-12 max-w-md px-5 pb-12">
+      <div className="relative mx-auto -mt-12 max-w-md px-5 pb-12">
         <form
           className="space-y-5 rounded-3xl border bg-card p-6 shadow-soft"
           onSubmit={(e) => {

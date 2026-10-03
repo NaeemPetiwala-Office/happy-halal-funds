@@ -59,7 +59,7 @@ function SettingsPage() {
   return (
     <>
       <PageHeader eyebrow="Preferences" title="Settings" />
-      <div className="mx-auto -mt-6 max-w-5xl space-y-5 px-5 md:px-16">
+      <div className="relative mx-auto -mt-6 max-w-5xl space-y-5 px-5 md:px-16">
         <form onSubmit={save} className="space-y-5 rounded-3xl border bg-card p-6 shadow-soft">
           <h2 className="text-lg">Profile</h2>
           <div className="grid gap-5 md:grid-cols-3">

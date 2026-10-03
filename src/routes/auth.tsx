@@ -70,7 +70,7 @@ function AuthPage() {
         </div>
       </div>
 
-      <div className="mx-auto -mt-12 w-full max-w-md px-5 pb-12">
+      <div className="relative mx-auto -mt-12 w-full max-w-md px-5 pb-12">
         <div className="rounded-3xl border bg-card p-6 shadow-soft">
           {sent ? (
             <div className="py-4 text-center">

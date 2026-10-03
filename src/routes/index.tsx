@@ -45,7 +45,7 @@ function Index() {
           </div>
         </div>
       </section>
-      <section className="mx-auto -mt-12 grid max-w-3xl gap-4 px-5 pb-16 md:grid-cols-3">
+      <section className="relative mx-auto -mt-12 grid max-w-3xl gap-4 px-5 pb-16 md:grid-cols-3">
         {points.map(({ icon: Icon, title, text }) => (
           <div key={title} className="rounded-3xl border bg-card p-6 shadow-soft">
             <div className="flex size-11 items-center justify-center rounded-2xl bg-mint text-mint-foreground">

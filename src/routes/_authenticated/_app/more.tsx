@@ -39,7 +39,7 @@ function MorePage() {
   return (
     <>
       <PageHeader eyebrow="Everything else" title="More" />
-      <div className="mx-auto -mt-6 max-w-5xl space-y-6 px-5 md:px-16">
+      <div className="relative mx-auto -mt-6 max-w-5xl space-y-6 px-5 md:px-16">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {SECONDARY_NAV.map(({ to, label, icon }) => (
             <Tile key={to} to={to} label={label} Icon={icon} />

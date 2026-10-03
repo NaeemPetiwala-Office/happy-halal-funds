@@ -40,7 +40,7 @@ export function PlaceholderPage({
   return (
     <>
       <PageHeader eyebrow={eyebrow} title={title} />
-      <div className="mx-auto -mt-6 max-w-5xl px-5 md:px-16">
+      <div className="relative mx-auto -mt-6 max-w-5xl px-5 md:px-16">
         <div className="rounded-3xl border bg-card p-8 text-center shadow-soft">
           <div className="mx-auto flex size-14 items-center justify-center rounded-2xl bg-mint text-mint-foreground">
             {icon}
