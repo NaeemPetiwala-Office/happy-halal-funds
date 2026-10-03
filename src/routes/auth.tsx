@@ -112,11 +112,11 @@ function AuthPage() {
                     type="password"
                     autoComplete={mode === "signin" ? "current-password" : "new-password"}
                     required
-                    minLength={8}
+                    minLength={6}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
-                  {mode === "signup" && <p className="ps-4 text-xs text-muted-foreground">At least 8 characters.</p>}
+                  {mode === "signup" && <p className="ps-4 text-xs text-muted-foreground">At least 6 characters.</p>}
                 </div>
                 <Button type="submit" className="h-11 w-full" disabled={busy}>
                   {busy ? "Please wait…" : mode === "signin" ? "Sign in" : "Create account"}
