@@ -1,12 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo, useState } from "react";
-import { Pencil, Plus, Search, Trash2 } from "lucide-react";
+import { Pencil, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { PageHeader } from "@/components/PageHeader";
 import { TransactionForm } from "@/components/TransactionForm";
 import { SampleDataCard } from "@/components/SampleDataCard";
-import { useQuickAdd } from "@/components/QuickAdd";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -36,7 +35,6 @@ function Page() {
   const { data: categories = [] } = useQuery(categoriesQuery);
   const { data: accounts = [] } = useQuery(accountsQuery);
   const invalidate = useInvalidateData();
-  const quickAdd = useQuickAdd();
   const cur = profile?.currency ?? "USD";
 
   const [q, setQ] = useState("");
@@ -70,15 +68,7 @@ function Page() {
 
   return (
     <>
-      <PageHeader
-        eyebrow="Track"
-        title="Log"
-        actions={
-          <button type="button" className="glass-btn" aria-label="Add transaction" onClick={quickAdd.open}>
-            <Plus className="size-5" />
-          </button>
-        }
-      />
+      <PageHeader eyebrow="Track" title="Log" />
       <div className="relative mx-auto -mt-6 flex max-w-5xl flex-col gap-4 px-5 md:px-10">
         <div className="grid gap-3 rounded-3xl border bg-card p-4 shadow-soft sm:grid-cols-[1fr_auto_auto]">
           <div className="relative">
