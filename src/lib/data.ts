@@ -8,6 +8,8 @@ export type IncomeEntry = Tables<"income_entries">;
 export type Transaction = Tables<"transactions">;
 export type Account = Tables<"accounts">;
 export type Goal = Tables<"goals">;
+export type Transfer = Tables<"transfers">;
+export type RecurringItem = Tables<"recurring_items">;
 
 function listQuery<T extends "categories" | "income_sources" | "accounts" | "goals">(table: T) {
   return queryOptions({
@@ -24,6 +26,24 @@ export const categoriesQuery = listQuery("categories");
 export const incomeSourcesQuery = listQuery("income_sources");
 export const accountsQuery = listQuery("accounts");
 export const goalsQuery = listQuery("goals");
+
+export const transfersQuery = queryOptions({
+  queryKey: ["data", "transfers"],
+  queryFn: async () => {
+    const { data, error } = await supabase.from("transfers").select("*").order("date", { ascending: false }).order("created_at", { ascending: false });
+    if (error) throw error;
+    return data;
+  },
+});
+
+export const recurringItemsQuery = queryOptions({
+  queryKey: ["data", "recurring_items"],
+  queryFn: async () => {
+    const { data, error } = await supabase.from("recurring_items").select("*").order("first_due_date");
+    if (error) throw error;
+    return data;
+  },
+});
 
 export const transactionsQuery = queryOptions({
   queryKey: ["data", "transactions"],
