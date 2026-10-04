@@ -72,3 +72,32 @@ describe("health checks", () => {
     expect(byId("interest-waiting").level).toBe("ok");
   });
 });
+
+describe("test-scenario fixes", () => {
+  it("counts bank balances in Zakat (scenario: due 3,040, still 2,040, 510/month, 140 days)", () => {
+    const r = zakatCalc({
+      basis: "Silver", gold_grams: 87.48, silver_grams: 612.36, gold_price: null, silver_price: 100, rate: 0.025,
+      anniversary_date: "2027-02-20", zakat_category_id: "z", bankBalances: 61600,
+      lines: [{ kind: "asset", amount: 10000 }, { kind: "asset", amount: 50000 }],
+      transactions: [{ date: "2026-08-18", category_id: "z", amount: 500 }, { date: "2026-09-18", category_id: "z", amount: 500 }],
+      today: "2026-10-03",
+    });
+    expect(r.assets).toBe(121600);
+    expect(r.meetsNisab).toBe(true);
+    expect(r.due).toBeCloseTo(3040);
+    expect(r.stillToSetAside).toBeCloseTo(2040);
+    expect(r.monthlySuggestion).toBe(510);
+    expect(r.daysToAnniversary).toBe(140);
+  });
+  it("flags a goal whose withdrawals exceed deposits", () => {
+    const base = {
+      today: "2026-10-03", planStart: "2026-08-01", selectedMonth: "2026-10-01", categories: [], transactions: [],
+      recurring: [], incomeEntriesCount: 1, incomeSourcesCount: 1, accountsCount: 1, plannedIncome: 0, summary: null,
+      interestWaiting: 0, zakatAnniversary: null, goals: [{ id: "l", name: "Laptop", target: 40000 }],
+    };
+    const bad = healthChecks({ ...base, goalPlans: [{ id: "l", monthlyPlan: 3500, saved: -4500 }] }).find((c) => c.id === "goal-negative")!;
+    expect(bad.level).toBe("note");
+    const ok = healthChecks({ ...base, goalPlans: [{ id: "l", monthlyPlan: 3500, saved: 5500 }] }).find((c) => c.id === "goal-negative")!;
+    expect(ok.level).toBe("ok");
+  });
+});
