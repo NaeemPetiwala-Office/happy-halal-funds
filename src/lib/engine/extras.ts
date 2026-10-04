@@ -34,6 +34,8 @@ export interface ZakatInput {
   anniversary_date: string | null;
   zakat_category_id: string | null;
   lines: { kind: "asset" | "liability"; amount: number }[];
+  /** Sum of account balances, counted automatically as a zakatable asset. */
+  bankBalances?: number | undefined;
   transactions: { date: string; category_id: string | null; amount: number }[];
   today: string;
 }
@@ -49,13 +51,16 @@ export interface ZakatResult {
   stillToSetAside: number;
   monthsToAnniversary: number | null;
   monthlySuggestion: number | null;
+  bankBalances: number;
+  daysToAnniversary: number | null;
 }
 
 export function zakatCalc(z: ZakatInput): ZakatResult {
   const price = z.basis === "Gold" ? z.gold_price : z.silver_price;
   const grams = z.basis === "Gold" ? z.gold_grams : z.silver_grams;
   const nisab = price != null && price > 0 ? grams * price : 0;
-  const assets = z.lines.filter((l) => l.kind === "asset").reduce((s, l) => s + Number(l.amount), 0);
+  const bankBalances = Number(z.bankBalances ?? 0);
+  const assets = bankBalances + z.lines.filter((l) => l.kind === "asset").reduce((s, l) => s + Number(l.amount), 0);
   const liabilities = z.lines.filter((l) => l.kind === "liability").reduce((s, l) => s + Number(l.amount), 0);
   const net = Math.max(assets - liabilities, 0);
   const meetsNisab = nisab > 0 && net >= nisab;
@@ -71,7 +76,8 @@ export function zakatCalc(z: ZakatInput): ZakatResult {
   }
   const stillToSetAside = Math.max(due - setAside, 0);
   const monthlySuggestion = monthsToAnniversary == null ? null : Math.ceil(stillToSetAside / monthsToAnniversary);
-  return { pricePerGram: price, nisab, assets, liabilities, net, meetsNisab, due, setAside, stillToSetAside, monthsToAnniversary, monthlySuggestion };
+  const daysToAnniversary = z.anniversary_date ? daysBetween(z.today, z.anniversary_date) : null;
+  return { pricePerGram: price, nisab, assets, liabilities, net, meetsNisab, due, setAside, stillToSetAside, monthsToAnniversary, monthlySuggestion, bankBalances, daysToAnniversary };
 }
 
 /* ---------- Interest ---------- */
@@ -119,7 +125,7 @@ export interface HealthInput {
   categories: (Omit<ECategory, "type"> & { type: ECategory["type"] | null; notes?: string | null })[];
   transactions: { date: string | null; category_id: string | null; amount: number | null }[];
   goals: { id: string; name: string; target: number | null }[];
-  goalPlans: { id: string; monthlyPlan: number }[];
+  goalPlans: { id: string; monthlyPlan: number; saved?: number | undefined }[];
   recurring: { name: string; category_id: string | null }[];
   incomeEntriesCount: number;
   incomeSourcesCount: number;
@@ -186,6 +192,9 @@ export function healthChecks(h: HealthInput): HealthCheck[] {
 
   const noTarget = h.goals.filter((g) => g.target == null);
   add("goal-no-target", "Goals without a target", noTarget.length > 0, "note", `No target set for: ${noTarget.map((g) => `"${g.name}"`).join(", ")}.`, "Every goal has a target.", "/goals");
+
+  const negative = h.goals.filter((g) => (h.goalPlans.find((p) => p.id === g.id)?.saved ?? 0) < -EPS);
+  add("goal-negative", "Goal withdrawals vs deposits", negative.length > 0, "note", `Withdrawals are more than deposits for: ${negative.map((g) => `"${g.name}"`).join(", ")}. Check for a mistyped amount.`, "No goal has more withdrawn than saved.", "/goals");
 
   const sample = h.categories.filter((c) => c.notes === "Sample data").length;
   add("sample-data", "Sample data", sample > 0, "note", `${sample === 1 ? "1 sample category" : `${sample} sample categories`} still in your plan. Delete them when you're ready.`, "No sample data left.", "/budget");
