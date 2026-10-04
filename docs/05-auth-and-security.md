@@ -51,7 +51,7 @@ Run it with `bun scripts/rls-check.ts`. It needs `VITE_SUPABASE_URL` and `VITE_S
 | No trackers | `src/test/privacy.test.ts` |
 | RLS on every table | Migrations + `scripts/rls-check.ts` |
 | Input validation | `src/lib/budget-rules.ts`, `src/lib/parse.ts`, DB constraints and unique indexes, row-limit triggers, CSV import validation (`src/lib/csv.ts`) |
-| CSV formula injection | `escapeCell` prefixes `= + - @` cells with a quote (`src/lib/csv.ts`) |
+| CSV formula injection | `escapeCell` prefixes cells starting with `= + - @`, tab or CR with a quote, except plain numbers such as `-500` (`src/lib/csv.ts`) |
 | Dev tools hidden in production | `isDevEnvironment` (`src/lib/dev-tools.ts`): dev build, localhost, `id-preview--*` or `*-dev.lovable.app` only |
 | Weak auth settings | Auto-confirm, HIBP off and 6-char minimum. **Change before real users.** |
 
