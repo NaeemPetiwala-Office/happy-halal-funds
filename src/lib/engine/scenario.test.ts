@@ -143,9 +143,9 @@ describe("recurring (3 Oct 2026)", () => {
   const t = (sel: string) => recurringTotals(F.recurring, F.TODAY, sel);
   it("next due, status, set-aside", () => {
     const m = Object.fromEntries(t("2026-10").map((x) => [x.item.name, x]));
-    expect([m.Rent!.nextDue, m.Rent!.status, m.Rent!.monthlySetAside]).toEqual(["2026-11-01", "Upcoming", 15000]);
-    expect([m.Internet!.nextDue, m.Internet!.status, m.Internet!.monthlySetAside, m.Internet!.daysUntil]).toEqual(["2026-10-05", "Due soon", 800, 2]);
-    expect([m.Maintenance!.nextDue, m.Maintenance!.status, m.Maintenance!.monthlySetAside]).toEqual(["2026-11-10", "Upcoming", 1000]);
+    expect([m["Rent"]!.nextDue, m["Rent"]!.status, m["Rent"]!.monthlySetAside]).toEqual(["2026-11-01", "Upcoming", 15000]);
+    expect([m["Internet"]!.nextDue, m["Internet"]!.status, m["Internet"]!.monthlySetAside, m["Internet"]!.daysUntil]).toEqual(["2026-10-05", "Due soon", 800, 2]);
+    expect([m["Maintenance"]!.nextDue, m["Maintenance"]!.status, m["Maintenance"]!.monthlySetAside]).toEqual(["2026-11-10", "Upcoming", 1000]);
     expect([m["Takaful car insurance"]!.nextDue, m["Takaful car insurance"]!.status, m["Takaful car insurance"]!.monthlySetAside]).toEqual(["2026-12-20", "Upcoming", 1000]);
     expect([m["School fee"]!.nextDue, m["School fee"]!.status]).toEqual(["2026-11-15", "Upcoming"]);
   });
