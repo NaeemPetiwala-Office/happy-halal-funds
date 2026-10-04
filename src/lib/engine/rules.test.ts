@@ -99,7 +99,7 @@ describe("recurring due dates", () => {
     expect(nextRecurringDue(it, T)).toBe("2026-11-10");
     expect([recurringDueInMonth(it, "2026-10"), recurringDueInMonth(it, "2026-11")]).toEqual([false, true]);
   });
-  it("yearly", () => expect(nextRecurringDue({ ...base, frequency: "Yearly", first_due_date: "2025-10-01" }, T)).toBe("2026-10-01".replace("2026-10-01", "2027-10-01")));
+  it("yearly", () => expect(nextRecurringDue({ ...base, frequency: "Yearly", first_due_date: "2025-10-01" }, T)).toBe("2027-10-01"));
   it("one-time: upcoming then completed", () => {
     expect(nextRecurringDue({ ...base, frequency: "One-time", first_due_date: "2026-11-15" }, T)).toBe("2026-11-15");
     const done = recurringTotals([{ ...base, frequency: "One-time", first_due_date: "2026-09-15" }], T, "2026-10")[0]!;
