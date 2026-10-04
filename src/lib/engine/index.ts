@@ -64,6 +64,10 @@ export function monthIndex(planStart: string, date: string): number {
   const [y, m] = ym(date);
   return (y - y0) * 12 + (m - m0);
 }
+/** Plan start is always the 1st of its month ("2026-08-17" -> "2026-08-01"). */
+export function normalizePlanStart(date: string): string {
+  return `${date.slice(0, 7)}-01`;
+}
 /** "YYYY-MM" of month k. */
 export function monthKey(planStart: string, k: number): string {
   const [y0, m0] = ym(planStart);
@@ -98,7 +102,8 @@ export function computePlan(input: {
   transactions: ETransaction[];
   goals: EGoal[];
 }): Plan {
-  const { planStart, today, categories, transactions, goals } = input;
+  const { today, categories, transactions, goals } = input;
+  const planStart = normalizePlanStart(input.planStart);
   const ids = new Set(categories.map((c) => c.id));
   const goalById = new Map(goals.map((g) => [g.id, g]));
   const target = new Map(categories.map((c) => [c.id, targetOf(c, ids)]));
