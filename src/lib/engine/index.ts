@@ -399,7 +399,7 @@ export function recurringTotals(items: ERecurringItem[], today: string, selected
     const nextDue = nextRecurringDue(item, today);
     const daysUntil = nextDue == null ? null : Math.round((Date.parse(`${nextDue}T00:00:00Z`) - Date.parse(`${today}T00:00:00Z`)) / 86400000);
     const step = recurringStepMonths(item.frequency);
-    const monthlySetAside = item.active ? (step > 0 ? Number(item.amount) / step : nextDue ? Number(item.amount) : 0) : 0;
+    const monthlySetAside = item.active && step > 0 ? Number(item.amount) / step : 0;
     const status: RecurringStatus = !item.active ? "Inactive" : nextDue == null ? "Completed" : daysUntil === 0 ? "Due today" : (daysUntil ?? 8) <= 7 ? "Due soon" : "Upcoming";
     return { item, nextDue, daysUntil, status, monthlySetAside, dueInSelectedMonth: recurringDueInMonth(item, selectedMonth) };
   });
