@@ -12,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { useTheme } from "@/components/ThemeToggle";
 import { ModulesCard, NewYearCard } from "@/components/SettingsExtras";
 import { DataCard } from "@/components/DataCard";
+import { DevTools } from "@/components/DevTools";
 import { applyLocale, LOCALES, useLocale, type Locale } from "@/lib/i18n";
 import { CURRENCIES } from "@/lib/currencies";
 import { dateToMonthInput, monthInputToDate, profileQuery } from "@/lib/profile";
@@ -131,6 +132,7 @@ function SettingsPage() {
         <DataCard />
         <ModulesCard />
         <NewYearCard />
+        <DevTools />
 
         <Button variant="outline" onClick={signOut} className="h-11">
           <LogOut /> {t("Sign out")}
