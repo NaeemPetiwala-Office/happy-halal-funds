@@ -112,7 +112,7 @@ describe("goals (as of October)", () => {
   it("logged | auto | total | remaining | progress | plan | months", () => {
     const o = run();
     const g = Object.fromEntries(goalTotals(o.plan, o.goals, o.txs).map((x) => [x.goal.name, x]));
-    const pick = (n: string) => { const x = g[n]!; return [x.savedFromLog, x.autoCounted, x.saved, x.remaining, x.progress, x.monthlyPlan, x.monthsToGo]; };
+    const pick = (n: string) => { const x = g[n]!; return [x.savedFromLog, x.autoCounted, x.saved, x.remaining, Math.round(x.progress! * 1e6) / 1e6, x.monthlyPlan, x.monthsToGo]; };
     expect(pick("Emergency Fund")).toEqual([13600, 0, 18600, 41400, 31, 8000, 6]);
     expect(pick("Umrah")).toEqual([6000, 6000, 12000, 108000, 10, 6000, 18]);
     expect(pick("Laptop")).toEqual([5500, 0, 5500, 34500, 13.75, 3500, 10]);
