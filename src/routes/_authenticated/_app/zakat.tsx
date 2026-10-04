@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
-import { categoriesQuery, friendlyError, transactionsQuery, useInvalidateData, zakatLinesQuery, zakatSettingsQuery, type ZakatLine } from "@/lib/data";
-import { zakatCalc } from "@/lib/engine";
+import { accountsQuery, categoriesQuery, friendlyError, incomeEntriesQuery, transactionsQuery, transfersQuery, useInvalidateData, zakatLinesQuery, zakatSettingsQuery, type ZakatLine } from "@/lib/data";
+import { accountTotals, zakatCalc } from "@/lib/engine";
 import { dateLabel, formatMoney, todayISO } from "@/lib/format";
 import { profileQuery } from "@/lib/profile";
 
@@ -36,6 +36,15 @@ function Page() {
   const { data: lines = [] } = useQuery(zakatLinesQuery);
   const { data: cats = [] } = useQuery(categoriesQuery);
   const { data: txs = [] } = useQuery(transactionsQuery);
+  const { data: accounts = [] } = useQuery(accountsQuery);
+  const { data: incomeEntries = [] } = useQuery(incomeEntriesQuery);
+  const { data: transfers = [] } = useQuery(transfersQuery);
+  const bankBalances = accountTotals(
+    accounts.map((a) => ({ ...a, opening_balance: Number(a.opening_balance), minimum_balance: Number(a.minimum_balance), actual_balance: a.actual_balance == null ? null : Number(a.actual_balance) })),
+    incomeEntries.map((x) => ({ ...x, amount: Number(x.amount) })),
+    txs.map((x) => ({ ...x, amount: Number(x.amount) })),
+    transfers.map((x) => ({ ...x, amount: Number(x.amount) })),
+  ).reduce((s, a) => s + a.balance, 0);
   const invalidate = useInvalidateData();
   const cur = profile?.currency ?? "USD";
 
@@ -65,7 +74,7 @@ function Page() {
   const r = zakatCalc({
     basis: f.basis, gold_grams: num(f.gold_grams) ?? 0, silver_grams: num(f.silver_grams) ?? 0, gold_price: num(f.gold_price), silver_price: num(f.silver_price),
     rate: (num(f.rate) ?? 0) / 100, anniversary_date: f.anniversary_date || null, zakat_category_id: f.zakat_category_id || null,
-    lines: lines.map((l) => ({ kind: l.kind, amount: Number(l.amount) })), transactions: txs.map((t) => ({ ...t, amount: Number(t.amount) })), today: todayISO(),
+    lines: lines.map((l) => ({ kind: l.kind, amount: Number(l.amount) })), bankBalances, transactions: txs.map((t) => ({ ...t, amount: Number(t.amount) })), today: todayISO(),
   });
   const fm = (n: number) => formatMoney(n, cur);
   const priceMissing = r.pricePerGram == null || r.pricePerGram <= 0;
@@ -108,9 +117,9 @@ function Page() {
               {priceMissing && <p className="rounded-2xl bg-accent/15 p-3 text-sm">Enter the {f.basis.toLowerCase()} price per gram to calculate the nisab.</p>}
               <div className="grid grid-cols-2 gap-3">
                 <Stat label="Nisab" value={fm(r.nisab)} hint={priceMissing ? "Needs a price" : `${f.basis === "Gold" ? f.gold_grams : f.silver_grams} g × ${fm(r.pricePerGram!)}`} />
-                <Stat label="Net zakatable wealth" value={fm(r.net)} hint={`${fm(r.assets)} assets − ${fm(r.liabilities)} liabilities`} />
+                <Stat label="Net zakatable wealth" value={fm(r.net)} hint={`${fm(r.assets)} assets (incl. ${fm(r.bankBalances)} bank balances) − ${fm(r.liabilities)} liabilities`} />
                 <Stat label="Zakat due" value={fm(r.due)} strong hint={r.meetsNisab ? `${f.rate}% of net wealth` : "Below nisab — none due"} />
-                <Stat label="Already set aside" value={fm(r.setAside)} hint={f.anniversary_date ? `12 months to ${dateLabel(f.anniversary_date)}` : "Set an anniversary"} />
+                <Stat label="Already set aside" value={fm(r.setAside)} hint={f.anniversary_date ? `12 months to ${dateLabel(f.anniversary_date)} · ${r.daysToAnniversary} days away` : "Set an anniversary"} />
                 <Stat label="Still to set aside" value={fm(r.stillToSetAside)} strong />
                 <Stat label="Suggested per month" value={r.monthlySuggestion == null ? "—" : fm(r.monthlySuggestion)} hint={r.monthsToAnniversary == null ? "Set an anniversary" : `over ${r.monthsToAnniversary} month${r.monthsToAnniversary === 1 ? "" : "s"}`} />
               </div>
@@ -119,7 +128,7 @@ function Page() {
           </div>
         )}
         <div className="grid gap-5 lg:grid-cols-2">
-          <LinesPanel kind="asset" title="Assets" hint="Cash, savings, gold, silver, trade goods, money owed to you." lines={lines} cur={cur} />
+          <LinesPanel kind="asset" title="Assets" hint={`Your account balances (${formatMoney(bankBalances, cur)}) are counted automatically. Add cash at home, gold, silver, trade goods, money owed to you.`} lines={lines} cur={cur} />
           <LinesPanel kind="liability" title="Liabilities" hint="Debts due now that you will pay." lines={lines} cur={cur} />
         </div>
       </div>

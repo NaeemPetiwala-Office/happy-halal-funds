@@ -8,6 +8,7 @@ import { MonthSwitcher } from "@/components/MonthSwitcher";
 import { SampleDataCard } from "@/components/SampleDataCard";
 import { SetupChecklist } from "@/components/SetupChecklist";
 import { usePlan } from "@/lib/use-plan";
+import { useHealth } from "@/lib/use-health";
 import { CATEGORY_TYPES, monthAlerts, monthSummary } from "@/lib/engine";
 import { formatMoney, monthLabel } from "@/lib/format";
 import { currencySymbol } from "@/lib/currencies";
@@ -34,6 +35,7 @@ const C = {
 
 function Page() {
   const p = usePlan();
+  const health = useHealth();
   const [year, setYear] = useState<0 | 1>(0);
 
   if (p.loading) {
@@ -48,6 +50,15 @@ function Page() {
   const fm = (n: number) => formatMoney(n, cur);
   const sym = currencySymbol(cur);
   const alerts = monthAlerts(plan, k, s, p.goals);
+  if (health) {
+    const fixes = health.checks.filter((c) => c.level === "fix").length;
+    alerts.unshift(fixes > 0
+      ? { level: "fix", message: `Health check: ${fixes} thing${fixes === 1 ? "" : "s"} to fix.` }
+      : { level: "note", message: "Health check: nothing needs fixing." });
+    if (health.dueSoon > 0) alerts.push({ level: "note", message: `${health.dueSoon} recurring payment${health.dueSoon === 1 ? "" : "s"} due within 7 days.` });
+    if (health.interestWaiting > 0.005) alerts.push({ level: "note", message: `${fm(health.interestWaiting)} of interest is waiting to be given away.` });
+    for (const g of p.goals.filter((g) => g.saved < -0.005)) alerts.push({ level: "fix", message: `Goal "${g.goal.name}" has more withdrawn than saved (${fm(g.saved)}).` });
+  }
   const byType = CATEGORY_TYPES.map((t) => ({ type: t, Planned: round(s.byType[t].planned), Actual: round(s.byType[t].actual) }));
   const trend = Array.from({ length: 12 }, (_, i) => {
     const mk = year * 12 + i;
