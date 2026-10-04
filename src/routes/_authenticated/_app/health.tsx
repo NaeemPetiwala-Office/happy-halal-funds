@@ -1,15 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageSkeleton } from "@/components/EmptyState";
-import { useQuery } from "@tanstack/react-query";
 import { ChevronRight } from "lucide-react";
 import { PageHeader } from "@/components/PageHeader";
-import {
-  accountsQuery, categoriesQuery, incomeSourcesQuery, interestGivenQuery, interestReceivedQuery,
-  recurringItemsQuery, transactionsQuery, zakatSettingsQuery,
-} from "@/lib/data";
-import { healthChecks, interestTotals, type HealthLevel } from "@/lib/engine";
-import { todayISO } from "@/lib/format";
-import { usePlan } from "@/lib/use-plan";
+import { type HealthLevel } from "@/lib/engine";
+import { useHealth } from "@/lib/use-health";
 
 export const Route = createFileRoute("/_authenticated/_app/health")({
   head: () => ({
@@ -31,35 +25,9 @@ const BADGE: Record<HealthLevel, string> = {
 const LABEL: Record<HealthLevel, string> = { fix: "Fix", note: "Note", ok: "OK" };
 
 function Page() {
-  const p = usePlan();
-  const cats = useQuery(categoriesQuery).data ?? [];
-  const txs = useQuery(transactionsQuery).data ?? [];
-  const rec = useQuery(recurringItemsQuery).data ?? [];
-  const accounts = useQuery(accountsQuery).data ?? [];
-  const sources = useQuery(incomeSourcesQuery).data ?? [];
-  const ir = useQuery(interestReceivedQuery).data ?? [];
-  const ig = useQuery(interestGivenQuery).data ?? [];
-  const zs = useQuery(zakatSettingsQuery).data;
-
-  if (p.loading) return <><PageHeader eyebrow="Keep things right" title="Health check" /><PageSkeleton /></>;
-
-  const checks = healthChecks({
-    today: todayISO(),
-    planStart: p.profile.plan_start,
-    selectedMonth: p.profile.selected_month,
-    categories: cats.map((c) => ({ ...c, planned: Number(c.planned) })),
-    transactions: txs.map((t) => ({ ...t, amount: Number(t.amount) })),
-    goals: p.goals.map((g) => ({ id: g.goal.id, name: g.goal.name, target: g.goal.target })),
-    goalPlans: p.goals.map((g) => ({ id: g.goal.id, monthlyPlan: g.monthlyPlan })),
-    recurring: rec,
-    incomeEntriesCount: p.incomeEntries.length,
-    incomeSourcesCount: sources.length,
-    accountsCount: accounts.length,
-    plannedIncome: p.plannedIncome,
-    summary: p.summary,
-    interestWaiting: interestTotals(ir, ig).waiting,
-    zakatAnniversary: zs?.anniversary_date ?? null,
-  });
+  const h = useHealth();
+  if (!h) return <><PageHeader eyebrow="Keep things right" title="Health check" /><PageSkeleton /></>;
+  const checks = h.checks;
   const order: HealthLevel[] = ["fix", "note", "ok"];
   const sorted = [...checks].sort((a, b) => order.indexOf(a.level) - order.indexOf(b.level));
   const fixes = checks.filter((c) => c.level === "fix").length;
