@@ -25,3 +25,4 @@
 - Offline: the query cache is persisted to localStorage (cleared on sign-out) and a `vite-plugin-pwa` service worker is registered only from `src/lib/pwa-register.ts`, never in dev/preview — keeps preview safe while the published app stays readable offline.
 - CSV import/export logic is pure in `src/lib/csv.ts` (formula-escaped export, exact-name category matching on import) so it is unit-tested.
 - `src/test/privacy.test.ts` fails the test run if any analytics/tracker package or script appears; `scripts/rls-check.ts` is the manual two-user RLS check.
+- `src/lib/engine` never reads the clock: every date-dependent function takes `today`, and `scenario.test.ts` guards this — keeps results reproducible against docs/test-scenario.md.
