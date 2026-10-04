@@ -7,3 +7,4 @@
 - [x] Unusual-input tests
 - [x] Privacy scan test + RLS check script
 - [ ] Translate remaining page body text into Arabic (needs native-speaker review)
+- [x] Document the UI inventory and capture the requested screen review set
