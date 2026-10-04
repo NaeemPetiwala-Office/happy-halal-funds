@@ -4,7 +4,7 @@
 
 - The app is published with Lovable's Publish button to `https://happy-halal-funds.lovable.app`. Front-end changes go live only after you click "Update". Database changes apply immediately.
 - The build is `vite build` (`package.json`), configured by `@lovable.dev/vite-tanstack-config` (`vite.config.ts`). It produces a server-rendered TanStack Start app built with Nitro for a Cloudflare Workers-style runtime. The server entry is `src/server.ts`.
-- **Output:** `dist/`. Client assets are in `dist/client/`, including the service worker `sw.js` from `vite-plugin-pwa`. The server bundle sits alongside them.
+- **Output:** `dist/` (git-ignored; not present in the workspace right now). Client assets are in `dist/client/`, including the service worker `sw.js` from `vite-plugin-pwa`. The server bundle sits alongside them.
 - **PWA:** `public/manifest.webmanifest` and icons. The service worker is registered only by `src/lib/pwa-register.ts`, and never in dev, preview hosts or iframes.
 
 ## Static hosting (e.g. Firebase Hosting)

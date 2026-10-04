@@ -10,7 +10,7 @@ Current result: **103 tests in 10 files, all passing.**
 
 ## Test files
 
-| File | Tests | Covers |
+| File | `it` blocks | Covers |
 |---|---|---|
 | `src/lib/engine/engine.test.ts` | 11 | Original rule cases (a)–(g): carry chain with backdating, own negative carry, A→B→C one hop, auto-count 69,000/72,000, extra deposit 55,200, savings withdrawal, exact names; tracker status; account balances; recurring dates |
 | `src/lib/engine/scenario.test.ts` | 25 | No clock reads; every number for Aug–Nov from `docs/test-scenario.md` (today 3 Oct 2026); goals; accounts; recurring; Zakat; interest; health; variants E1–E6 (E6 with today 2 Nov) |
@@ -22,6 +22,8 @@ Current result: **103 tests in 10 files, all passing.**
 | `src/lib/dev-tools.test.ts` | 3 | Test-scenario data shape |
 | `src/test/app-routing.test.tsx` | 1 | App routing renders |
 | `src/test/privacy.test.ts` | 2 | No tracker packages or scripts |
+
+`unusual-inputs.test.ts` uses `it.each`, so its 11 blocks expand to more tests. The total, as reported by Vitest, is 103.
 
 The fixture is `src/lib/engine/scenario.fixture.ts`.
 

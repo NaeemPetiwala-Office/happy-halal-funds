@@ -90,30 +90,33 @@ sequenceDiagram
 | Screen | Main components |
 |---|---|
 | Shell | `AppShell.tsx` (sidebar / bottom bar, FAB → `QuickAdd.tsx`), `OfflineBanner.tsx` |
-| Dashboard | `PageHeader`, `MonthSwitcher`, `DataCard`, `SetupChecklist`, `SampleDataCard`, recharts |
-| Tracker | `MonthSwitcher`, `StatusBadge` |
+| Dashboard | `PageHeader`, `MonthSwitcher`, `SetupChecklist`, `SampleDataCard`, `EmptyState`, recharts |
+| Tracker | `PageHeader`, `MonthSwitcher`, `StatusBadge`, `EmptyState` |
 | Add / Quick Add | `TransactionForm` |
 | Zakat / Interest | `Disclaimer` (+ `Stat`) |
 | Planners | `PlannerPage` |
-| Settings | `MonthPicker`, `ThemeToggle`, `SettingsExtras` (Modules, New year), `DevTools` |
+| Settings | `PageHeader`, `MonthPicker`, `ThemeToggle`, `DataCard` (CSV), `SettingsExtras` (Modules, New year), `DevTools` |
+| Budget / Log | `PageHeader`, `SampleDataCard`, `EmptyState` |
+| Onboarding | `MonthPicker` |
 | All data pages | `EmptyState`, `PageSkeleton` (`EmptyState.tsx`) |
 
 ## Dependencies and why
 
-| Package | Why |
-|---|---|
-| `@tanstack/react-start`, `react-router`, `router-plugin` | Framework, file routing |
-| `@tanstack/react-query` (+ persist) | Caching, offline reading |
-| `@supabase/supabase-js` | Auth and database |
-| `@radix-ui/*`, `class-variance-authority`, `clsx`, `tailwind-merge`, `lucide-react`, `vaul`, `cmdk`, `sonner` | shadcn/ui components, icons, drawer, toasts |
-| `recharts` | Dashboard charts |
-| `react-hook-form`, `@hookform/resolvers`, `zod` | Form helpers / validation |
-| `date-fns`, `react-day-picker` | Date helpers and pickers |
-| `tailwindcss`, `tw-animate-css` | Styling |
-| `vite-plugin-pwa` (dev) | Service worker |
-| `vitest`, `jsdom`, `@testing-library/*` (dev) | Tests |
-| `nitro` (dev) | Server build target |
+Checked by searching imports in `src/` (outside `src/components/ui/`).
 
-## Unverified
+| Package | Why | Used by app code? |
+|---|---|---|
+| `@tanstack/react-start`, `react-router`, `router-plugin` | Framework, file routing | yes |
+| `@tanstack/react-query` (+ persist-client, sync-storage-persister) | Caching, offline reading | yes |
+| `@supabase/supabase-js` | Auth and database | yes |
+| `recharts` | Dashboard charts (`dashboard.tsx`) | yes |
+| `sonner` | Toasts | yes |
+| `lucide-react` | Icons | yes |
+| `@radix-ui/*`, `class-variance-authority`, `clsx`, `tailwind-merge`, `vaul` | shadcn/ui primitives | Only these primitives are imported: `alert-dialog`, `button`, `dialog`, `drawer` (vaul), `input`, `label`, `select`, `skeleton`, `sonner`, `switch` |
+| `tailwindcss`, `@tailwindcss/vite`, `tw-animate-css` | Styling | yes |
+| `react-hook-form`, `@hookform/resolvers`, `zod`, `date-fns`, `react-day-picker`, `cmdk`, `embla-carousel-react`, `input-otp`, `react-resizable-panels` | Template defaults | **no**, only referenced by unused shadcn files |
+| `vite-plugin-pwa` (dev) | Service worker (`vite.config.ts`) | yes |
+| `vitest`, `jsdom`, `@testing-library/*` (dev) | Tests | yes |
+| `nitro` (dev) | Server build target | build only |
 
-- Some shadcn primitives (e.g. `carousel`, `input-otp`, `resizable`, `menubar`) appear to be installed but unused. I did not check imports for each one.
+The other 36 files in `src/components/ui/` (e.g. `card`, `table`, `tabs`, `sheet`, `chart`, `popover`) are not imported by app code.

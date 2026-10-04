@@ -38,12 +38,12 @@ All signed-in screens are in `src/routes/_authenticated/_app/`.
 | Interest | `/interest` | Received, given away, waiting to give; disclaimer |
 | Health Check | `/health` | Fix / Note / OK checks, each linking to the problem page |
 | More | `/more` | Secondary navigation plus enabled planners |
-| Settings | `/settings` | Profile, currency, plan start, theme, language, CSV import/export, Modules, Start a new year, sign out; Developer and Danger zone in preview only (`DevTools.tsx`) |
+| Settings | `/settings` | Profile, currency, plan start, theme, language, CSV import/export (`DataCard.tsx`), Modules, Start a new year, sign out; Developer and Danger zone in preview only (`DevTools.tsx`) |
 | Ramadan / Qurbani / Hajj & Umrah | `/ramadan`, `/qurbani`, `/hajj` | Shared `PlannerPage.tsx`: dates, items (planned/spent), months until, monthly set-aside |
 
 Other capabilities:
 - **Sample data:** `SampleDataCard.tsx` + `src/lib/sample-data.ts`.
-- **CSV:** `src/lib/csv.ts`, Settings → Data.
+- **CSV:** `src/lib/csv.ts`; UI in `src/components/DataCard.tsx` (Settings → Data).
 - **Offline / installable:** `src/lib/pwa-register.ts`, `OfflineBanner.tsx`.
 - **English/Arabic:** `src/lib/i18n`.
 - **Start a new year:** `SettingsExtras.tsx` → `start_new_year` database function.
@@ -61,7 +61,7 @@ Other capabilities:
 | Recurring items | 50 | DB trigger |
 | Plan window | 24 months from plan start | `PLAN_MONTHS` in `src/lib/engine/index.ts` |
 | Category name | 40 chars, unique, not "Same category"/"Drop it" | `src/lib/budget-rules.ts` + DB constraints |
-| Account name | 30 chars, unique | `src/lib/budget-rules.ts` |
+| Account name | 30 chars, unique | `validateAccountName` in `src/lib/parse.ts` + DB unique `(user_id, name)` |
 
 ## Optional
 
