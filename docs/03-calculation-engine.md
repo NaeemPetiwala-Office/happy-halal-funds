@@ -59,7 +59,7 @@ So surpluses move only after the month, one hop per month. Shortfalls stay in th
 - **Remaining** = Available − Actual.
 - **% used** = actual / available. If available is 0 or less, it is 100% when there is spending and 0% otherwise.
 - **Status:**
-  - Over budget if remaining < 0.
+  - Ahead of plan if remaining < 0 and the category type is Savings; Over budget if remaining < 0 for every other type (BRL-10).
   - Not started if actual = 0.
   - Done if remaining = 0.
   - Near limit if 90% or more is used.

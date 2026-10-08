@@ -91,7 +91,7 @@ Health Check (October): All good, with one Note (interest waiting 20).
 Dashboard alerts (October): health OK; over-budget 0; near limit 0; recurring due within 7 days 1; interest waiting 20; unallocated 0.
 
 ## Variants (apply on top of the base scenario)
-E1: log 15 Oct Umrah fund 9,000. October Umrah actual 9,000, remaining -3,000, Over budget, carry-out -3,000. November carry-in -3,000, available 3,000. Umrah goal total 21,000. Over-budget alert 1.
+E1: log 15 Oct Umrah fund 9,000. October Umrah actual 9,000, remaining -3,000, Ahead of plan, carry-out -3,000. November carry-in -3,000, available 3,000. Umrah goal total 21,000. Over-budget alert 1.
 E2: log 20 Oct Transport 3,000 (total 3,500 vs plan 1,500). October remaining -2,000, Over budget. November Transport carry-in 0.
 E3: log 16 Oct Laptop fund -10,000. Laptop goal total -4,500, progress 0%, remaining 44,500. Tracker Laptop row unchanged (carry-in 1,500, remaining 5,000). The app must not crash and should warn that withdrawals exceed deposits.
 E4: set Umrah Auto-count to No. Umrah total 6,000, remaining 114,000, 5%, months 19; October Umrah carry-in 6,000. Switching back to Yes restores 12,000.

@@ -156,7 +156,7 @@ export function computePlan(input: {
 
 /* ---------- tracker ---------- */
 
-export type Status = "Over budget" | "Not started" | "Done" | "Near limit" | "On track";
+export type Status = "Over budget" | "Ahead of plan" | "Not started" | "Done" | "Near limit" | "On track";
 
 export interface TrackerRow {
   category: ECategory;
@@ -171,8 +171,9 @@ export interface TrackerRow {
   auto: number;
 }
 
-export function statusOf(available: number, actual: number, remaining: number, pct: number): Status {
-  if (remaining < -EPS) return "Over budget";
+/** BRL-10: a Savings category funded above its plan is "Ahead of plan"; any other overspend is "Over budget". */
+export function statusOf(available: number, actual: number, remaining: number, pct: number, type?: string): Status {
+  if (remaining < -EPS) return type === "Savings" ? "Ahead of plan" : "Over budget";
   if (Math.abs(actual) < EPS) return "Not started";
   if (Math.abs(remaining) < EPS) return "Done";
   if (pct >= 90) return "Near limit";
@@ -194,7 +195,7 @@ export function trackerRows(plan: Plan, k: number): TrackerRow[] {
       actual,
       remaining,
       pctUsed,
-      status: statusOf(available, actual, remaining, pctUsed),
+      status: statusOf(available, actual, remaining, pctUsed, c.type),
       carryOut: c.leftover_mode === "drop" ? 0 : remaining,
       auto: cell.auto,
     };

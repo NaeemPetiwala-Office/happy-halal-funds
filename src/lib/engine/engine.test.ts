@@ -1,5 +1,6 @@
 import { describe, it, expect } from "vitest";
 import {
+  statusOf,
   computePlan,
   accountTotals,
   findCategoryByName,
@@ -170,5 +171,20 @@ describe("engine", () => {
     expect(total.status).toBe("Upcoming");
     expect(total.monthlySetAside).toBe(100);
     expect(total.dueInSelectedMonth).toBe(true);
+  });
+});
+
+describe("statusOf (BRL-10)", () => {
+  it("Savings overspend is Ahead of plan, any other overspend is Over budget", () => {
+    expect(statusOf(6000, 9000, -3000, 150, "Savings")).toBe("Ahead of plan");
+    expect(statusOf(6000, 9000, -3000, 150, "Variable")).toBe("Over budget");
+    expect(statusOf(6000, 9000, -3000, 150, "Fixed")).toBe("Over budget");
+    expect(statusOf(6000, 9000, -3000, 150, "Giving")).toBe("Over budget");
+  });
+  it("applies the remaining BRL-10 rules in order", () => {
+    expect(statusOf(1000, 0, 1000, 0, "Savings")).toBe("Not started");
+    expect(statusOf(1000, 1000, 0, 100, "Variable")).toBe("Done");
+    expect(statusOf(1000, 900, 100, 90, "Variable")).toBe("Near limit");
+    expect(statusOf(1000, 500, 500, 50, "Variable")).toBe("On track");
   });
 });

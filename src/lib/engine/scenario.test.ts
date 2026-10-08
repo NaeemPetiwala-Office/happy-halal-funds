@@ -189,11 +189,12 @@ describe("variants", () => {
   it("E1: 15 Oct Umrah fund 9,000", () => {
     const o = run({ extra: [{ date: "2026-10-15", category_id: "Umrah fund", amount: 9000 }] });
     const oct = row(o.plan, 2, "Umrah fund");
-    expect([oct.actual, oct.remaining, oct.status, oct.carryOut]).toEqual([9000, -3000, "Over budget", -3000]);
+    expect([oct.actual, oct.remaining, oct.status, oct.carryOut]).toEqual([9000, -3000, "Ahead of plan", -3000]);
     const nov = row(o.plan, 3, "Umrah fund");
     expect([nov.carryIn, nov.available]).toEqual([-3000, 3000]);
     expect(goalTotals(o.plan, o.goals, o.txs).find((g) => g.goal.id === "Umrah")!.saved).toBe(21000);
-    expect(trackerRows(o.plan, 2).filter((r) => r.status === "Over budget").length).toBe(1);
+    // Appendix A, E1 and AC-07: "Ahead of plan" is not an over-budget category.
+    expect(trackerRows(o.plan, 2).filter((r) => r.status === "Over budget").length).toBe(0);
   });
   it("E2: 20 Oct Transport 3,000", () => {
     const o = run({ extra: [{ date: "2026-10-20", category_id: "Transport", amount: 3000 }] });
